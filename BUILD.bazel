@@ -1,0 +1,56 @@
+load("@pybind11_bazel//:build_defs.bzl", "pybind_extension", "pybind_library")
+
+#------------------------------------------------
+# C++ library
+
+cc_library(
+  name = "ignition_msgs_lib",
+  srcs = ["src/ignition_msgs.cc"],
+  hdrs = ["include/ignition_msgs.hh"],
+  includes = ["include"],
+  deps = [
+      "@ign-msgs9//:time_cc_proto",
+      "@ign-msgs9//:topic_info_cc_proto",
+      "@ign-msgs9//:wrench_cc_proto",
+  ],
+  visibility = ["//visibility:public"],
+)
+
+#------------------------------------------------
+# C++ binary
+
+cc_binary(
+  name = "main",
+  srcs = ["src/main.cc"],
+  includes = ["include"],
+  deps = [
+      "//:ignition_msgs_lib",
+  ],
+  visibility = ["//visibility:public"],
+)
+
+#------------------------------------------------
+# Python C++ extension module
+
+pybind_extension(
+  name = "ignition_msgs",
+  srcs = ["src/pybind11/ignition_msgs.cc"],
+  includes = ["include"],
+  deps = [
+      "//:ignition_msgs_lib",
+      "@pybind11_protobuf//pybind11_protobuf:native_proto_caster",
+      "@com_google_protobuf//:protobuf",
+  ],
+  visibility = ["//visibility:public"],
+)
+
+pybind_extension(
+  name = "ignition_transport",
+  srcs = ["src/pybind11/ignition_transport.cc"],
+  includes = ["include"],
+  deps = [
+      "@pybind11_protobuf//pybind11_protobuf:native_proto_caster",
+      "@com_google_protobuf//:protobuf",
+  ],
+  visibility = ["//visibility:public"],
+)

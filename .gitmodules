@@ -1,0 +1,6 @@
+[submodule "external/pybind11_protobuf"]
+	path = external/pybind11_protobuf
+	url = https://github.com/pybind/pybind11_protobuf.git
+[submodule "external/protobuf"]
+	path = external/protobuf
+	url = https://github.com/protocolbuffers/protobuf.git
