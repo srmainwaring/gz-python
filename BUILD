@@ -74,7 +74,6 @@ cc_binary(
   visibility = ["//visibility:public"],
 )
 
-
 #———————————————————————————————————————————————————————————————————————
 # rover_publisher
 
@@ -82,6 +81,23 @@ cc_binary(
   name = "rover_publisher",
   srcs = [
     "rover_publisher.cc",
+  ],
+  deps = [
+    "//ign_math:ign_math",
+    "//ign_msgs:ign_msgs",
+    "//ign_transport:ign_transport",
+    "@com_google_protobuf//:protobuf",
+  ],
+  visibility = ["//visibility:public"],
+)
+
+#———————————————————————————————————————————————————————————————————————
+# rover_subscriber
+
+cc_binary(
+  name = "rover_subscriber",
+  srcs = [
+    "rover_subscriber.cc",
   ],
   deps = [
     "//ign_math:ign_math",
