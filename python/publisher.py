@@ -23,36 +23,32 @@ from ign_examples.ignition_transport import Node
 from ign_examples.ignition_transport import Publisher
 
 def main():
-  print("Publisher Example\n")
+    # Create a transport node and advertise a topic
+    node = Node()
+    topic = "/foo"
+    msg_type_name = StringMsg.DESCRIPTOR.full_name
+    pub_options = AdvertiseMessageOptions()
+    pub = node.advertise(topic, msg_type_name, pub_options)
+    if pub.valid():
+        print("Advertising {} on topic[{}]".format(msg_type_name, topic))
+    else:
+        print("Error advertising topic [{}]".format(topic))
 
-  # Create a transport node and advertise a topic
-  node = Node()
-  topic = "/foo"
-  msg_type_name = StringMsg.DESCRIPTOR.full_name
-  pub_options = AdvertiseMessageOptions()
-  pub = node.advertise(topic, msg_type_name, pub_options)
-  if pub.valid():
-      print("Advertising {} on topic[{}]".format(msg_type_name, topic))
-  else:
-    print("Error advertising topic [{}]".format(topic))
+    # Prepare the message
+    msg = StringMsg()
+    msg.data = "hello"
 
-  # Prepare the message
-  msg = StringMsg()
-  msg.data = "hello"
+    try:
+        while True:
+          if not pub.publish(msg):
+              break
 
-  try:
-    while True:
+          print("Publishing hello on topic[{}]".format(topic))
+          time.sleep(1.0)
 
-      if not pub.publish(msg):
-        break
-
-      print("Publishing hello on topic[{}]".format(topic))
-
-      time.sleep(1.0)
-
-  except KeyboardInterrupt:
-    pass
+    except KeyboardInterrupt:
+      pass
 
 if __name__ == "__main__":
-  main()
+    main()
 
