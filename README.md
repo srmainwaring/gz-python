@@ -72,9 +72,9 @@ $ bazel build //python_ignition/python:all
 
 | library | repo | branch | build | test |
 | --- | --- | --- | --- | --- |
-|
+| | | | | |
 |python_ignition|https://github.com/srmainwaring/python-ignition|bazel-macos/python-ignition|pass|-|
-|
+| | | | | |
 |ign-bazel|https://github.com/srmainwaring/ign-bazel|bazel-macos|pass|pass|
 |ign-math|https://github.com/srmainwaring/ign-math|bazel-macos/ign-math6|pass|pass|
 |ign-utils|https://github.com/ignitionrobotics/ign-utils|main|pass|pass|
@@ -89,7 +89,7 @@ $ bazel build //python_ignition/python:all
 |ign-gui|https://github.com/ignitionrobotics/ign-gui|bazel-gui4|fail|fail|
 |ign-sensors|https://github.com/ignitionrobotics/ign-sensors|bazel-sensors4|fail|fail|
 |ign-gazebo|https://github.com/ignitionrobotics/ign-gazebo|bazel-gazebo4|fail|fail|
-|
+| | | | | |
 
 ## Usage
 
