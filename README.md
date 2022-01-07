@@ -7,12 +7,14 @@ C++ and Python libraries for [`ignition-msgs`](https://github.com/ignitionroboti
 The objective is to generate Python bindings for [`ignition-transport`](https://github.com/ignitionrobotics/ign-transport) using [`pybind11`](https://github.com/pybind/pybind11). Interoperability between native Python protobuf
 libraries and the C++ protobuf library used in the [`pybind11`](https://github.com/pybind/pybind11) extension module is provided by [`pybind11_protobuf`](https://github.com/pybind/pybind11_protobuf).
 
-### Status
+## Status
 
 - Working bindings for a selection of [`ignition-msgs`](https://github.com/ignitionrobotics/ign-msgs) are available using the protocol buffers native Python implementation. The build rules for the C++ implementation are also available however there is an open issue in [`pybind11_protobuf`](https://github.com/pybind/pybind11_protobuf) that prevents full interoperability in this case (see Notes below).
-- Bindings for [`ignition-transport`](https://github.com/ignitionrobotics/ign-transport) are in development. A mock-up of the main interfaces is provided that illustrates the proposed approach.
+- Bindings for [`ignition-transport`](https://github.com/ignitionrobotics/ign-transport) are in development. At present only publishing messages is supported. The interface is very similar to the one available in C++.
 
-## Install: macOS
+## Install - macOS
+
+### Prerequisites
 
 Install [Bazel](https://bazel.build/) and the [Google protocol buffers compiler](https://github.com/protocolbuffers/protobuf) using brew:
 
@@ -30,15 +32,49 @@ $ bazel --version
 bazel 4.2.2-homebrew
 ```
 
-Build everything
-Examples using Ignition with the Bazel build system.
+### Set up [`ign-bazel`](https://github.com/ignitionrobotics/ign-bazel)
 
-## Summary
+This project is developed on macOS and uses custom versions of some of the libraries 
+referenced in https://github.com/ignitionrobotics/ign-bazel/blob/master/example/bazel.repos
+which are listed in the table below.
 
-The table below summarised which projects build on macOS and the repos and branches used.
+Follow the instructions to set up
+[ign-bazel](https://github.com/ignitionrobotics/ign-bazel). On macOS you will need
+the repos and branches listed in the table. On other systems you will need the additional
+external build file [`ign-msgs9.BUILD`](https://github.com/srmainwaring/ign-bazel/blob/bazel-macos/example/ign-msgs9.BUILD.example).
+
+This project should be cloned into the workspace directory at the same level as the other ignition libraries. Symlink the `bazelrc`, `BUILD` and `WORKSPACE` files into the
+workspace root, including the additional external `BUILD` file for `ign-msgs`:
+
+```bash
+cd ~/ignition
+
+git clone https://github.com/srmainwaring/python-ignition.git -b bazel-macos/python-ignition python_ignition
+
+ln -sf ./ign_bazel/example/WORKSPACE.example ./WORKSPACE
+ln -sf ./ign_bazel/example/BUILD.example ./BUILD.bazel
+ln -sf ./ign_bazel/example/bazelrc.example ./.bazelrc
+ln -sf ./ign_bazel/example/ign-msgs9.BUILD.example ./ign-msgs9.BUILD
+```
+
+Ensure that the Python impementation of the Python protobuf generator is used:  
+
+```bash
+export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
+```
+
+Build the examples with
+
+```bash
+$ bazel build //python_ignition:all
+$ bazel build //python_ignition/python:all
+```
 
 | library | repo | branch | build | test |
 | --- | --- | --- | --- | --- |
+|
+|python_ignition|https://github.com/srmainwaring/python-ignition|bazel-macos/python-ignition|pass|-|
+|
 |ign-bazel|https://github.com/srmainwaring/ign-bazel|bazel-macos|pass|pass|
 |ign-math|https://github.com/srmainwaring/ign-math|bazel-macos/ign-math6|pass|pass|
 |ign-utils|https://github.com/ignitionrobotics/ign-utils|main|pass|pass|
@@ -55,17 +91,9 @@ The table below summarised which projects build on macOS and the repos and branc
 |ign-gazebo|https://github.com/ignitionrobotics/ign-gazebo|bazel-gazebo4|fail|fail|
 |
 
-## Install
-
-Not all propjects are building, so the following will not work:
-
-```bash
-$ bazel build //...
-```
-
 ## Usage
 
-The Bazel build file `ign-msgs8=9.BUILD` defines targets for a selection of messages.
+The Bazel build file `ign-msgs9.BUILD` defines targets for a selection of messages.
 For example the targets for `proto/ignition/msgs/time.proto` are:
 
 ```bash
@@ -141,13 +169,94 @@ py_binary(
 
 ## Examples
 
-There are C++ and Python examples:
+To use the `ign` command line tool to view topics:
 
-- `src/main.cc` an example using the C++ protobuf library.
-- `python/ign_proto_example` an example using the Python protobuf library.
-- `python/ign_msgs_example` an example using the Python protobuf library and a simple extenson module with functions that accept and return `ignition-msgs`.
-- `python/ign_transport_example` an example using the Python protobuf library and an
-extenson module with a mock-up of the `ignition.transport::Node` interface.
+```bash
+$ IGN_CONFIG_PATH=bazel-bin/ign_transport ign topic -l
+```
+
+### Example 1:
+
+`src/msg_example.cc` is a version of the [`ign-msgs` tutorial example](https://ignitionrobotics.org/api/msgs/8.1/cppgetstarted.html). Run:
+
+```bash
+$ ./bazel-bin/python_ignition/msg_example
+```
+
+### Example 2:
+
+`src/publisher.cc` and `src/subscriber.cc` is a version of the [`ign-transport` messages tutorial example](https://ignitionrobotics.org/api/transport/11.0/messages.html)
+
+From terminal 1:
+
+```bash
+$ ./bazel-bin/python_ignition/publisher
+```
+
+From terminal 2:
+
+```bash
+$ ./bazel-bin/python_ignition/subscriber
+```
+
+### Example 3:
+
+`src/rover_publisher.cc` and `src/rover_subscriber.cc` comprise another publish / subscribe
+example that publishes the pose and twist of a rover moving in a circle with constant
+angular velocity.
+
+From terminal 1:
+
+```bash
+$ ./bazel-bin/python_ignition/rover_publisher
+```
+
+From terminal 2:
+
+```bash
+$ ./bazel-bin/python_ignition/rover_subscriber
+```
+
+### Example 4:
+
+`python/msgs_example.py` is a Python example that uses the generated Python protobuf libraries for `ign-msgs`:
+
+```bash
+$ ./bazel-bin/python_ignition/python/msgs_example
+```
+
+### Example 5:
+
+`python/publisher.py` is a Python version of the C++ `src/publisher.cc` described above.
+You can listen to the messages using the C++ subscriber as before.
+
+From terminal 1:
+
+```bash
+$ ./bazel-bin/python_ignition/python/publisher
+```
+
+From terminal 2:
+
+```bash
+$ ./bazel-bin/python_ignition/subscriber
+```
+
+### Example 6:
+
+`python/rover_publisher.py` is a Python version of the C++ `src/rover_publisher.cc` example.
+
+From terminal 1:
+
+```bash
+$ ./bazel-bin/python_ignition/python/rover_publisher
+```
+
+From terminal 2:
+
+```bash
+$ ./bazel-bin/python_ignition/rover_subscriber
+```
 
 ## Notes and Issues
 
@@ -178,42 +287,3 @@ $ bazel build //python_ignition:all
 $ bazel build //python_ignition/python:all
 ```
 
-## Usage
-
-To use the `ign` command line tool for view topics:
-
-```bash
-$ IGN_CONFIG_PATH=bazel-bin/ign_transport ign topic -l
-```
-
-Running examples:
-
-```bash
-$ ./bazel-bin/python_ignition/msg_example
-@python_ignition//:msg_example
-Point1:
-x: 1
-y: 3
-z: 5
-
-Point2:
-x: 2
-y: 4
-z: 6
-```
-
-```bash
-$ ./bazel-bin/python_ignition/publisher
-Publishing hello on topic [/foo]
-Publishing hello on topic [/foo]
-Publishing hello on topic [/foo]
-```
-
-```bash
-$ ./bazel-bin/python_ignition/subscriber
-Msg: hello
-
-Msg: hello
-
-Msg: hello
-```
