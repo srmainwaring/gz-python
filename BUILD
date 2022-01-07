@@ -118,7 +118,7 @@ load("@pybind11_bazel//:build_defs.bzl", "pybind_extension", "pybind_library")
 
 pybind_extension(
   name = "ignition_transport",
-  srcs = ["src/pybind11/ignition_transport_pybind11.cc"],
+  srcs = ["src/pybind11/ignition_transport.cc"],
   deps = [
       "//ign_transport:ign_transport",
       "@pybind11_protobuf//pybind11_protobuf:native_proto_caster",
