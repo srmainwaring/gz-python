@@ -47,7 +47,7 @@ def main():
           time.sleep(1.0)
 
     except KeyboardInterrupt:
-      pass
+        pass
 
 if __name__ == "__main__":
     main()
