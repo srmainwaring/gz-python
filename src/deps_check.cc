@@ -26,6 +26,6 @@
 
 int main(int argc, const char *argv[])
 {
-  std::cout << "@ign_examples//:deps_check" << std::endl;
+  std::cout << "@python_ignition//:deps_check" << std::endl;
   return 0;
 }

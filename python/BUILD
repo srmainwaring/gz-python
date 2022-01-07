@@ -34,7 +34,7 @@ py_binary(
   name = "transport_example",
   srcs = ["transport_example.py"],
   data = [
-    "//ign_examples:ignition_transport.so",
+    "//python_ignition:ignition_transport.so",
     "@com_google_protobuf//:proto_api",
   ],
   deps = [
@@ -53,7 +53,7 @@ py_binary(
   name = "publisher",
   srcs = ["publisher.py"],
   data = [
-    "//ign_examples:ignition_transport.so",
+    "//python_ignition:ignition_transport.so",
     "@com_google_protobuf//:proto_api",
   ],
   deps = [
@@ -66,7 +66,7 @@ py_binary(
   name = "rover_publisher",
   srcs = ["rover_publisher.py"],
   data = [
-    "//ign_examples:ignition_transport.so",
+    "//python_ignition:ignition_transport.so",
     "@com_google_protobuf//:proto_api",
   ],
   deps = [

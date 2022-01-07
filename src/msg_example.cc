@@ -23,7 +23,7 @@ using namespace ignition;
 
 int main(int argc, const char *argv[])
 {
-  std::cout << "@ign_examples//:msg_example" << std::endl;
+  std::cout << "@python_ignition//:msg_example" << std::endl;
 
   // https://ignitionrobotics.org/api/msgs/8.1/cppgetstarted.html
   {

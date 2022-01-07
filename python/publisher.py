@@ -18,9 +18,9 @@ import time
 
 from ignition.msgs.stringmsg_pb2 import StringMsg
 
-from ign_examples.ignition_transport import AdvertiseMessageOptions
-from ign_examples.ignition_transport import Node
-from ign_examples.ignition_transport import Publisher
+from python_ignition.ignition_transport import AdvertiseMessageOptions
+from python_ignition.ignition_transport import Node
+from python_ignition.ignition_transport import Publisher
 
 def main():
     # Create a transport node and advertise a topic

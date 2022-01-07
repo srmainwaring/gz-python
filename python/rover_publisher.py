@@ -25,9 +25,9 @@ from ignition.msgs.time_pb2 import Time
 from ignition.msgs.twist_pb2 import Twist
 from ignition.msgs.vector3d_pb2 import Vector3d
 
-from ign_examples.ignition_transport import AdvertiseMessageOptions
-from ign_examples.ignition_transport import Node
-from ign_examples.ignition_transport import Publisher
+from python_ignition.ignition_transport import AdvertiseMessageOptions
+from python_ignition.ignition_transport import Node
+from python_ignition.ignition_transport import Publisher
 
 def main():
     # Create a transport node and advertise a topic

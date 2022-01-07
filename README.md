@@ -1,4 +1,4 @@
-# Ignition Bazel Examples
+# Python Ignition
 
 Examples using Ignition with the Bazel build system.
 
@@ -35,8 +35,8 @@ $ bazel build //...
 To build the examples:
 
 ```bash
-$ bazel build //ign_examples:all
-$ bazel build //ign_examples/python:all
+$ bazel build //python_ignition:all
+$ bazel build //python_ignition/python:all
 ```
 
 ## Usage
@@ -50,8 +50,8 @@ $ IGN_CONFIG_PATH=bazel-bin/ign_transport ign topic -l
 Running examples:
 
 ```bash
-$ ./bazel-bin/ign_examples/msg_example
-@ign_examples//:msg_example
+$ ./bazel-bin/python_ignition/msg_example
+@python_ignition//:msg_example
 Point1:
 x: 1
 y: 3
@@ -64,14 +64,14 @@ z: 6
 ```
 
 ```bash
-$ ./bazel-bin/ign_examples/publisher
+$ ./bazel-bin/python_ignition/publisher
 Publishing hello on topic [/foo]
 Publishing hello on topic [/foo]
 Publishing hello on topic [/foo]
 ```
 
 ```bash
-$ ./bazel-bin/ign_examples/subscriber
+$ ./bazel-bin/python_ignition/subscriber
 Msg: hello
 
 Msg: hello
