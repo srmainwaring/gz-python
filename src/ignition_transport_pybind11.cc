@@ -15,6 +15,8 @@
  *
 */
 
+#include <ignition/transport.hh>
+
 #include <pybind11/pybind11.h>
 #include <pybind11/functional.h>
 
@@ -48,37 +50,37 @@ using RawCallback =
         const MessageInfo &_info)>;
 
 /// \brief A mock-up of ignition::transport::AdvertiseMessageOptions
-class AdvertiseMessageOptions
-{
-public:
-  virtual ~AdvertiseMessageOptions() {}
-  AdvertiseMessageOptions() {}
-  bool Throttled() const { return this->msgsPerSec != 0; }
-  uint64_t MsgsPerSec() const { return this->msgsPerSec; }
-  void SetMsgsPerSec(const uint64_t _newMsgsPerSec)
-  {
-    this->msgsPerSec = _newMsgsPerSec;
-  }
+// class AdvertiseMessageOptions
+// {
+// public:
+//   virtual ~AdvertiseMessageOptions() {}
+//   AdvertiseMessageOptions() {}
+//   bool Throttled() const { return this->msgsPerSec != 0; }
+//   uint64_t MsgsPerSec() const { return this->msgsPerSec; }
+//   void SetMsgsPerSec(const uint64_t _newMsgsPerSec)
+//   {
+//     this->msgsPerSec = _newMsgsPerSec;
+//   }
 
-  private:
-    uint64_t msgsPerSec = 0;
-};
+//   private:
+//     uint64_t msgsPerSec = 0;
+// };
 
-class SubscribeOptions
-{
-public:
-  virtual ~SubscribeOptions() {}
-  SubscribeOptions() {}
-  bool Throttled() const { return this->msgsPerSec != 0; }
-  uint64_t MsgsPerSec() const { return this->msgsPerSec; }
-  void SetMsgsPerSec(const uint64_t _newMsgsPerSec)
-  {
-    this->msgsPerSec = _newMsgsPerSec;
-  }
+// class SubscribeOptions
+// {
+// public:
+//   virtual ~SubscribeOptions() {}
+//   SubscribeOptions() {}
+//   bool Throttled() const { return this->msgsPerSec != 0; }
+//   uint64_t MsgsPerSec() const { return this->msgsPerSec; }
+//   void SetMsgsPerSec(const uint64_t _newMsgsPerSec)
+//   {
+//     this->msgsPerSec = _newMsgsPerSec;
+//   }
 
-  private:
-    uint64_t msgsPerSec = 0;
-};
+//   private:
+//     uint64_t msgsPerSec = 0;
+// };
 
 /// \brief A mock-up of ignition::transport::Node
 class Node
@@ -116,7 +118,8 @@ public:
   Node::Publisher Advertise(
       const std::string &_topic,
       const std::string &_msgTypeName,
-      const AdvertiseMessageOptions &_options = AdvertiseMessageOptions())
+      const ignition::transport::AdvertiseMessageOptions &_options =
+          ignition::transport::AdvertiseMessageOptions())
   {
     std::cout << "Advertising" << "\n"
         << "topic: " << _topic << "\n"   
@@ -138,7 +141,8 @@ public:
   bool Subscribe(
       const std::string &_topic,
       std::function<void(const google::protobuf::Message &_msg)> &_callback,
-      const SubscribeOptions &_opts = SubscribeOptions())
+      const ignition::transport::SubscribeOptions &_opts =
+          ignition::transport::SubscribeOptions())
   {
     // std::string msgType = kGenericMessageType;
     
@@ -168,7 +172,8 @@ public:
     const std::string &_topic,
     const RawCallback &_callback,
     const std::string &_msgType = kGenericMessageType,
-    const SubscribeOptions &_opts = SubscribeOptions())
+    const ignition::transport::SubscribeOptions &_opts =
+        ignition::transport::SubscribeOptions())
   {
     // forward to ignition::transport::Node::SubscribeRaw
   }
@@ -229,22 +234,24 @@ public:
 /// \brief Define pybind11 bindings for ignition::transport objects
 void define_transport_node(py::object module)
 {
-  py::class_<AdvertiseMessageOptions>(module, "AdvertiseMessageOptions")
+  py::class_<ignition::transport::AdvertiseMessageOptions>(
+      module, "AdvertiseMessageOptions")
       .def(py::init<>())
       .def_property_readonly("throttled",
-          &AdvertiseMessageOptions::Throttled)
+          &ignition::transport::AdvertiseMessageOptions::Throttled)
       .def_property("msgs_per_sec",
-          &AdvertiseMessageOptions::MsgsPerSec,
-          &AdvertiseMessageOptions::SetMsgsPerSec)
+          &ignition::transport::AdvertiseMessageOptions::MsgsPerSec,
+          &ignition::transport::AdvertiseMessageOptions::SetMsgsPerSec)
       ;
 
-  py::class_<SubscribeOptions>(module, "SubscribeOptions")
+  py::class_<ignition::transport::SubscribeOptions>(
+      module, "SubscribeOptions")
       .def(py::init<>())
       .def_property_readonly("throttled",
-          &SubscribeOptions::Throttled)
+          &ignition::transport::SubscribeOptions::Throttled)
       .def_property("msgs_per_sec",
-          &SubscribeOptions::MsgsPerSec,
-          &SubscribeOptions::SetMsgsPerSec)
+          &ignition::transport::SubscribeOptions::MsgsPerSec,
+          &ignition::transport::SubscribeOptions::SetMsgsPerSec)
       ;
 
   py::class_<Node>(module, "Node")

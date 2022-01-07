@@ -118,6 +118,7 @@ pybind_extension(
   srcs = ["src/ignition_transport_pybind11.cc"],
   # includes = ["include"],
   deps = [
+      "//ign_transport:ign_transport",
       "@pybind11_protobuf//pybind11_protobuf:native_proto_caster",
       "@com_google_protobuf//:protobuf",
   ],
