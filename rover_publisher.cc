@@ -47,7 +47,7 @@ int main(int argc, char **argv)
 
   const auto start = std::chrono::steady_clock::now();
 
-  // Publish messages at 1Hz.
+  // Publish messages at 2Hz.
   uint32_t count = 0;
   while (!g_terminatePub)
   {
