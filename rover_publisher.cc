@@ -53,8 +53,9 @@ int main(int argc, char **argv)
   {
     // update time
     const auto now = std::chrono::steady_clock::now();
-    double time_s = std::chrono::duration_cast<std::chrono::seconds>(now - start).count();
-    double time_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(now - start).count();
+    auto time_s = std::chrono::duration_cast<std::chrono::seconds>(now - start).count();
+    auto time_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(now - start).count();
+    time_ns = time_ns % 1000000000;
     uint32_t id = count++;
 
     // update position, orientation and velocity
@@ -94,20 +95,20 @@ int main(int argc, char **argv)
     *pose.mutable_position() = position;
     *pose.mutable_orientation() = orientation;
 
-    ignition::msgs::Vector3d lin_vel;
-    lin_vel.set_x(vx);
-    lin_vel.set_y(vy);
-    lin_vel.set_z(0.0);
+    ignition::msgs::Vector3d lin_vel_msg;
+    lin_vel_msg.set_x(vx);
+    lin_vel_msg.set_y(vy);
+    lin_vel_msg.set_z(0.0);
 
-    ignition::msgs::Vector3d ang_vel;
-    ang_vel.set_x(0.0);
-    ang_vel.set_y(0.0);
-    ang_vel.set_z(wz);
+    ignition::msgs::Vector3d ang_vel_msg;
+    ang_vel_msg.set_x(0.0);
+    ang_vel_msg.set_y(0.0);
+    ang_vel_msg.set_z(wz);
 
     ignition::msgs::Twist twist;
     *twist.mutable_header() = header;
-    *twist.mutable_linear() = lin_vel;
-    *twist.mutable_angular() = ang_vel;
+    *twist.mutable_linear() = ang_vel_msg;
+    *twist.mutable_angular() = ang_vel_msg;
 
     if (!pose_pub.Publish(pose))
     {
@@ -120,9 +121,8 @@ int main(int argc, char **argv)
       break;
     }
     std::cout << "Publishing twist on topic [" << twist_topic << "]\n";
-    std::cout << twist.DebugString() << "\n";
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
   }
   return 0;
 }
