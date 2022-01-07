@@ -7,7 +7,7 @@
 
 cc_binary(
   name = "deps_check",
-  srcs = ["deps_check.cc"],
+  srcs = ["src/deps_check.cc"],
   deps = [
     "//ign_utils:ign_utils",
     "//ign_math:ign_math",
@@ -34,7 +34,7 @@ cc_binary(
 cc_binary(
   name = "msg_example",
   srcs = [
-    "msg_example.cc",
+    "src/msg_example.cc",
   ],
   deps = [
     "//ign_msgs:ign_msgs",
@@ -49,7 +49,7 @@ cc_binary(
 cc_binary(
   name = "publisher",
   srcs = [
-    "publisher.cc",
+    "src/publisher.cc",
   ],
   deps = [
     "//ign_msgs:ign_msgs",
@@ -65,7 +65,7 @@ cc_binary(
 cc_binary(
   name = "subscriber",
   srcs = [
-    "subscriber.cc",
+    "src/subscriber.cc",
   ],
   deps = [
     "//ign_msgs:ign_msgs",
@@ -81,7 +81,7 @@ cc_binary(
 cc_binary(
   name = "rover_publisher",
   srcs = [
-    "rover_publisher.cc",
+    "src/rover_publisher.cc",
   ],
   deps = [
     "//ign_math:ign_math",
@@ -98,7 +98,7 @@ cc_binary(
 cc_binary(
   name = "rover_subscriber",
   srcs = [
-    "rover_subscriber.cc",
+    "src/rover_subscriber.cc",
   ],
   deps = [
     "//ign_math:ign_math",
@@ -118,7 +118,7 @@ load("@pybind11_bazel//:build_defs.bzl", "pybind_extension", "pybind_library")
 
 pybind_extension(
   name = "ignition_transport",
-  srcs = ["src/ignition_transport_pybind11.cc"],
+  srcs = ["src/pybind11/ignition_transport_pybind11.cc"],
   deps = [
       "//ign_transport:ign_transport",
       "@pybind11_protobuf//pybind11_protobuf:native_proto_caster",
