@@ -1,52 +1,50 @@
 # Ignition Bazel Examples
 
-This project contains copies of the tutorial examples and Bazel `BUILD` files
-to compile them.
+Examples using Ignition with the Bazel build system.
 
+## Summary
 
-| repo | build | test |
-| --- | --- | --- |
-| ign-utils | | |
-| ign-maths | | |
-| ign-msgs | | |
-| ign-common | | |
-| sdformat | | |
-| ign-plugin  | | |
-| ign-physics | | |
-| ign-transport | | |
-| ign-fuel_tools | | |
-| ign-rendering | | |
-| ign-gui | | |
-| ign-sensors | | |
-| ign-gazebo | | |
+The table below summarised which projects build on macOS and the repos and branches used.
 
-## `ign-bazel` macOS
-
-| repo | branch |
-| --- | --- |
-| https://github.com/srmainwaring/ign-bazel         | bazel-macos |
-| https://github.com/srmainwaring/ign-common        | bazel-macos/ign-common3 |
-| https://github.com/srmainwaring/ign-math          | bazel-macos/ign-math6 |
-| https://github.com/srmainwaring/ign-math          | bazel-macos/ign-math6 |
-| https://github.com/ignitionrobotics/ign-msgs      | ign-msgs6 |
-| https://github.com/ignitionrobotics/ign-physics   | bazel-physics3 |
-| https://github.com/srmainwaring/ign-plugin        | bazel-macos/ign-plugin1 |
-| https://github.com/ignitionrobotics/ign-tools     | bazel-tools1 |
-| https://github.com/srmainwaring/ign-transport     | bazel-macos/ign-transport9 |
-| https://github.com/ignitionrobotics/ign-utils     | main |
-| https://github.com/ignitionrobotics/sdformat      | bazel-sdf10 |
-
+| library | repo | branch | build | test |
+| --- | --- | --- | --- | --- |
+|ign-bazel|https://github.com/srmainwaring/ign-bazel|bazel-macos|pass|pass|
+|ign-math|https://github.com/srmainwaring/ign-math|bazel-macos/ign-math6|pass|pass|
+|ign-utils|https://github.com/ignitionrobotics/ign-utils|main|pass|pass|
+|ign-common|https://github.com/srmainwaring/ign-common|bazel-macos/ign-common3|pass|pass|
+|ign-msgs|https://github.com/ignitionrobotics/ign-msgs|ign-msgs6|pass|pass|
+|sdformat|https://github.com/ignitionrobotics/sdformat| bazel-sdf10|pass|pass|
+|ign-plugin|https://github.com/srmainwaring/ign-plugin|bazel-macos/ign-plugin1|pass|pass|
+|ign-transport|https://github.com/srmainwaring/ign-transport|bazel-macos/ign-transport9|pass|1 fail|
+|ign-physics|https://github.com/ignitionrobotics/ign-physics|bazel-physics3|pass|pass|
+|ign-tools|https://github.com/ignitionrobotics/ign-tools|bazel-tools1|partial|-|
+|ign-rendering|https://github.com/ignitionrobotics/ign-rendering|bazel-rendering4|fail|fail|
+|ign-gui|https://github.com/ignitionrobotics/ign-gui|bazel-gui4|fail|fail|
+|ign-sensors|https://github.com/ignitionrobotics/ign-sensors|bazel-sensors4|fail|fail|
+|ign-gazebo|https://github.com/ignitionrobotics/ign-gazebo|bazel-gazebo4|fail|fail|
+|
 
 ## Install
+
+Not all propjects are building, so the following will not work:
 
 ```bash
 $ bazel build //...
 ```
 
-Using `ign` command line tool:
+To build the examples:
 
 ```bash
-$ IGN_CONFIG_PATH=bazel-bin/ign_transport ign -h
+$ bazel build //ign_examples:all
+$ bazel build //ign_examples/python:all
+```
+
+## Usage
+
+To use the `ign` command line tool for view topics:
+
+```bash
+$ IGN_CONFIG_PATH=bazel-bin/ign_transport ign topic -l
 ```
 
 Running examples:
