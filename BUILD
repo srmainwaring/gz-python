@@ -2,6 +2,7 @@
 # ign_examples using Bazel builds
 
 #———————————————————————————————————————————————————————————————————————
+# deps_check
 # Quick check of dependencies on third-party packages
 
 cc_binary(
@@ -109,14 +110,15 @@ cc_binary(
 )
 
 #———————————————————————————————————————————————————————————————————————
-# Python bindings
+# ignition_transport
+# 
+# Python bindings for ignition transport
 
 load("@pybind11_bazel//:build_defs.bzl", "pybind_extension", "pybind_library")
 
 pybind_extension(
   name = "ignition_transport",
   srcs = ["src/ignition_transport_pybind11.cc"],
-  # includes = ["include"],
   deps = [
       "//ign_transport:ign_transport",
       "@pybind11_protobuf//pybind11_protobuf:native_proto_caster",

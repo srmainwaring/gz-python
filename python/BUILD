@@ -5,7 +5,7 @@ py_binary(
   name = "msgs_example",
   srcs = ["msgs_example.py"],
   data = [
-    # "@com_google_protobuf//:proto_api",
+    "@com_google_protobuf//:proto_api",
   ],
   deps = [
     "@ign-msgs9//:header_py_pb2",
@@ -27,6 +27,7 @@ py_binary(
     "@ign-msgs9//:subscribe_py_pb2",
     "@ign-msgs9//:topic_info_py_pb2",
   ],
+  visibility = ["//visibility:public"],
 )
 
 py_binary(
@@ -45,4 +46,18 @@ py_binary(
     "@ign-msgs9//:vector3d_py_pb2",
     "@ign-msgs9//:wrench_py_pb2",
   ],
+  visibility = ["//visibility:public"],
+)
+
+py_binary(
+  name = "publisher",
+  srcs = ["publisher.py"],
+  data = [
+    "//ign_examples:ignition_transport.so",
+    "@com_google_protobuf//:proto_api",
+  ],
+  deps = [
+    "@ign-msgs9//:stringmsg_py_pb2",
+  ],
+  visibility = ["//visibility:public"],
 )
