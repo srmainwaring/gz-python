@@ -92,3 +92,21 @@ py_binary(
   ],
   visibility = ["//visibility:public"],
 )
+
+py_binary(
+  name = "rover_subscriber",
+  srcs = ["rover_subscriber.py"],
+  data = [
+    "//python_ignition:ignition_transport.so",
+    "@com_google_protobuf//:proto_api",
+  ],
+  deps = [
+    "@ign-msgs9//:header_py_pb2",
+    "@ign-msgs9//:pose_py_pb2",
+    "@ign-msgs9//:quaternion_py_pb2",
+    "@ign-msgs9//:time_py_pb2",
+    "@ign-msgs9//:twist_py_pb2",
+    "@ign-msgs9//:vector3d_py_pb2",
+  ],
+  visibility = ["//visibility:public"],
+)

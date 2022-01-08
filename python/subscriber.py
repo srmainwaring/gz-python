@@ -21,12 +21,8 @@ from ignition.msgs.stringmsg_pb2 import StringMsg
 
 from python_ignition.ignition_transport import SubscribeOptions
 from python_ignition.ignition_transport import Node
-import python_ignition.ignition_transport as transport
 
-# def cb(msg: StringMsg) -> None:
-#     print("Msg: [{}]".format(msg.data))
-
-def cb(msg):
+def cb(msg: StringMsg) -> None:
     print("Msg: [{}] from Python".format(msg.data))
 
 def main():
@@ -37,17 +33,17 @@ def main():
     sub_options = SubscribeOptions()
 
     # subscribe to a topic by registering a callback
-    # if node.subscribe(topic, cb, msg_type_name, sub_options):
     if node.subscribe(topic, cb, msg_type_name, sub_options):
-        print("Subscribing to type {} on topic[{}]".format(msg_type_name, topic))
+        print("Subscribing to type {} on topic[{}]".format(
+            msg_type_name, topic))
     else:
-        print("Error advertising topic [{}]".format(topic))
+        print("Error subscribing to topic [{}]".format(topic))
         return
 
     # wait for shutdown
     try:
       while True:
-        pass
+        time.sleep(0.001)
     except KeyboardInterrupt:
       pass
 

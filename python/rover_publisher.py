@@ -32,22 +32,26 @@ from python_ignition.ignition_transport import Publisher
 def main():
     # Create a transport node and advertise a topic
     node = Node()
+    pub_options = AdvertiseMessageOptions()
 
     pose_topic = "/pose"
     pose_msg_type_name = Pose.DESCRIPTOR.full_name
-    pose_pub_options = AdvertiseMessageOptions()
-    pose_pub = node.advertise(pose_topic, pose_msg_type_name, pose_pub_options)
+
+    pose_pub = node.advertise(
+        pose_topic, pose_msg_type_name, pub_options)
     if pose_pub.valid():
-        print("Advertising {} on topic[{}]".format(pose_msg_type_name, pose_topic))
+        print("Advertising {} on topic[{}]".format(
+            pose_msg_type_name, pose_topic))
     else:
         print("Error advertising topic [{}]".format(pose_topic))
 
     twist_topic = "/twist"
     twist_msg_type_name = Twist.DESCRIPTOR.full_name
-    twist_pub_options = AdvertiseMessageOptions()
-    twist_pub = node.advertise(twist_topic, twist_msg_type_name, twist_pub_options)
+    twist_pub = node.advertise(
+        twist_topic, twist_msg_type_name, pub_options)
     if twist_pub.valid():
-        print("Advertising {} on topic[{}]".format(twist_msg_type_name, twist_topic))
+        print("Advertising {} on topic[{}]".format(
+            twist_msg_type_name, twist_topic))
     else:
         print("Error advertising topic [{}]".format(twist_topic))
 

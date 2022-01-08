@@ -20,6 +20,11 @@
 #include <ignition/msgs.hh>
 #include <ignition/transport.hh>
 
+void pose_cb(const ignition::msgs::Pose &_msg)
+{
+  std::cout << _msg.DebugString();
+}
+
 void twist_cb(const ignition::msgs::Twist &_msg)
 {
   std::cout << _msg.DebugString();
@@ -28,12 +33,22 @@ void twist_cb(const ignition::msgs::Twist &_msg)
 int main(int argc, char **argv)
 {
   ignition::transport::Node node;
-  std::string topic = "/twist";
 
-  // Subscribe to a topic by registering a callback.
-  if (!node.Subscribe(topic, twist_cb))
+  // subscribe to pose
+  std::string pose_topic = "/pose";
+  if (!node.Subscribe(pose_topic, pose_cb))
   {
-    std::cerr << "Error subscribing to topic [" << topic << "]" << std::endl;
+    std::cerr << "Error subscribing to topic ["
+        << pose_topic << "]" << std::endl;
+    return -1;
+  }
+
+  // subscribe to twist
+  std::string twist_topic = "/twist";
+  if (!node.Subscribe(twist_topic, twist_cb))
+  {
+    std::cerr << "Error subscribing to topic ["
+        << twist_topic << "]" << std::endl;
     return -1;
   }
 

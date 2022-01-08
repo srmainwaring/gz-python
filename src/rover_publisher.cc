@@ -124,20 +124,19 @@ int main(int argc, char **argv)
 
     ignition::msgs::Twist twist;
     *twist.mutable_header() = header;
-    *twist.mutable_linear() = ang_vel_msg;
+    *twist.mutable_linear() = lin_vel_msg;
     *twist.mutable_angular() = ang_vel_msg;
 
     if (!pose_pub.Publish(pose))
     {
       break;
     }
-    std::cout << "Publishing pose on topic [" << pose_topic << "]\n";
-
     if (!twist_pub.Publish(twist))
     {
       break;
     }
-    std::cout << "Publishing twist on topic [" << twist_topic << "]\n";
+    std::cout << "Publishing pose on topic [" << pose_topic
+        << "], twist on topic [" << twist_topic << "]\n";
 
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
   }
