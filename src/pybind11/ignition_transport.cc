@@ -15,6 +15,7 @@
  *
 */
 
+#include <ignition/msgs.hh>
 #include <ignition/transport.hh>
 
 #include <pybind11/pybind11.h>
@@ -27,74 +28,6 @@
 #include <functional>
 
 namespace py = pybind11;
-
-// mock-up of subscribe interface
-//   bool Subscribe(
-//       const std::string &_topic,
-//       std::function<void(const google::protobuf::Message &_msg)> &_callback,
-//       const ignition::transport::SubscribeOptions &_opts =
-//           ignition::transport::SubscribeOptions())
-//   {
-//     // std::string msgType = kGenericMessageType;
-    
-//     // RawCallback cb = [&](
-//     //   const char *_msgData,
-//     //   const size_t _size,
-//     //   const MessageInfo &_info) -> void
-//     // {
-//     //   // determine the correct message type
-//     //   msgType = _info.Type();
-
-//     //   // create the message from the string and metadata
-//     //   google::protobuf::Message msg;
-
-//     //   // call out callback
-//     //   _callback(msg);
-//     // };
-
-//     // return SubscribeRaw(_topic, cb, msgType, _opts);
-
-//     // Alternative
-//     // return Subscribe<google::protobuf::Message>(_topic, _callback, _opts);
-//     return true;
-//   }
-
-//   bool SubscribeRaw(
-//     const std::string &_topic,
-//     const ignition::transport::RawCallback &_callback,
-//     const std::string &_msgType = ignition::transport::kGenericMessageType,
-//     const ignition::transport::SubscribeOptions &_opts =
-//         ignition::transport::SubscribeOptions())
-//   {
-//     // forward to ignition::transport::Node::SubscribeRaw
-//   }
-
-// TODO(srmainwaring): remove when Node.Subscribe is implemented
-// callback function example
-//
-// https://pybind11.readthedocs.io/en/stable/advanced/cast/functional.html
-//
-class PubSub
-{
-public:
-  virtual ~PubSub() {}
-  PubSub() {}
-
-  void Publish(const google::protobuf::Message &_msg)
-  {
-    if (this->callback)
-    {
-      this->callback(_msg);
-    }
-  }
-
-  void Subscribe(std::function<void(const google::protobuf::Message &_msg)> &_callback)
-  {
-    this->callback = _callback;
-  }
-
-  std::function<void(const google::protobuf::Message &_msg)> callback;
-};
 
 /// \brief Define pybind11 bindings for ignition::transport objects
 void define_transport_node(py::object module)
@@ -135,14 +68,38 @@ void define_transport_node(py::object module)
           pybind11::arg("options"))
       .def("advertised_topics", &Node::AdvertisedTopics)
       .def("subscribe", [](
-          Node &node,
-          std::string &topic,
-          std::function<void(const google::protobuf::Message &_msg)> &callback,
-          std::string &msg_type_name,
-          const SubscribeOptions)
+          Node &_node,
+          std::string &_topic,
+          std::function<void(const google::protobuf::Message &_msg)> &_callback,
+          std::string &_msg_type_name,
+          const SubscribeOptions &_opts)
           {
-              std::cout << "Subscribing to " << topic << "\n";
-              return true;
+            // std::string msgType = kGenericMessageType;
+            
+            // RawCallback cb = [&](
+            //   const char *_msgData,
+            //   const size_t _size,
+            //   const MessageInfo &_info) -> void
+            // {
+            //   // determine the correct message type
+            //   auto msgType = _info.Type();
+
+            //   // create the message from the string and metadata
+            //   google::protobuf::Message msg;
+
+            //   // call out callback
+            //   _callback(msg);
+            // };
+
+            // valid = SubscribeRaw(_topic, cb, msgType, _opts);
+
+            std::function<void(const ignition::msgs::StringMsg &)> cb = [=] (
+                const ignition::msgs::StringMsg &_msg) -> void
+            {
+              _callback(_msg);
+            };
+
+            return _node.Subscribe(_topic, cb, _opts);
           },
           pybind11::arg("topic"),
           pybind11::arg("callback"),
@@ -169,8 +126,9 @@ PYBIND11_MODULE(ignition_transport, m) {
 
   define_transport_node(m);
 
-  m.def("wait_for_shutdown",
-      &ignition::transport::waitForShutdown,
-      "Block the current thread until a SIGINT or SIGTERM is received."
-  );
+  // TODO(srmainwaring): no good, as this will block the Python interpreter
+  // m.def("wait_for_shutdown",
+  //     &ignition::transport::waitForShutdown,
+  //     "Block the current thread until a SIGINT or SIGTERM is received."
+  // );
 }

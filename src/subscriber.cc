@@ -22,7 +22,7 @@
 
 void cb(const ignition::msgs::StringMsg &_msg)
 {
-  std::cout << "Msg: " << _msg.data() << std::endl << std::endl;
+  std::cout << "Msg: " << _msg.data() << std::endl;
 }
 
 int main(int argc, char **argv)

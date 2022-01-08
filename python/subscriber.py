@@ -23,8 +23,11 @@ from python_ignition.ignition_transport import SubscribeOptions
 from python_ignition.ignition_transport import Node
 import python_ignition.ignition_transport as transport
 
-def cb(msg: StringMsg) -> None:
-    print("Msg: [{}]".format(msg.data))
+# def cb(msg: StringMsg) -> None:
+#     print("Msg: [{}]".format(msg.data))
+
+def cb(msg):
+    print("Msg: [{}] from Python".format(msg.data))
 
 def main():
     # create a transport node
@@ -42,7 +45,11 @@ def main():
         return
 
     # wait for shutdown
-    transport.wait_for_shutdown()
+    try:
+      while True:
+        pass
+    except KeyboardInterrupt:
+      pass
 
 if __name__ == "__main__":
     main()
