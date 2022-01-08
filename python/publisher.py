@@ -30,7 +30,7 @@ def main():
     pub_options = AdvertiseMessageOptions()
     pub = node.advertise(topic, msg_type_name, pub_options)
     if pub.valid():
-        print("Advertising {} on topic[{}]".format(msg_type_name, topic))
+        print("Advertising {} on topic [{}]".format(msg_type_name, topic))
     else:
         print("Error advertising topic [{}]".format(topic))
 
@@ -43,7 +43,7 @@ def main():
           if not pub.publish(msg):
               break
 
-          print("Publishing hello on topic[{}]".format(topic))
+          print("Publishing hello on topic [{}]".format(topic))
           time.sleep(1.0)
 
     except KeyboardInterrupt:

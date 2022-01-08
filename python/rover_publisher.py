@@ -131,7 +131,7 @@ def main():
             if not twist_pub.publish(twist):
                 break
 
-            print("Publishing pose on topic[{}], twist on topic[{}]".format(
+            print("Publishing pose on topic [{}], twist on topic [{}]".format(
                 pose_topic, twist_topic))
 
             time.sleep(0.5)

@@ -34,7 +34,7 @@ def main():
 
     # subscribe to a topic by registering a callback
     if node.subscribe(topic, cb, msg_type_name, sub_options):
-        print("Subscribing to type {} on topic[{}]".format(
+        print("Subscribing to type {} on topic [{}]".format(
             msg_type_name, topic))
     else:
         print("Error subscribing to topic [{}]".format(topic))

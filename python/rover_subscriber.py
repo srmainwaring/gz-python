@@ -43,7 +43,7 @@ def main():
     pose_topic = "/pose"
     pose_msg_type_name = Pose.DESCRIPTOR.full_name
     if node.subscribe(pose_topic, pose_cb, pose_msg_type_name, sub_options):
-        print("Subscribing to type {} on topic[{}]".format(
+        print("Subscribing to type {} on topic [{}]".format(
             pose_msg_type_name, pose_topic))
     else:
         print("Error subscribing to topic [{}]".format(pose_topic))
@@ -53,7 +53,7 @@ def main():
     twist_topic = "/twist"
     twist_msg_type_name = Twist.DESCRIPTOR.full_name
     if node.subscribe(twist_topic, twist_cb, twist_msg_type_name, sub_options):
-        print("Subscribing to type {} on topic[{}]".format(
+        print("Subscribing to type {} on topic [{}]".format(
             twist_msg_type_name, twist_topic))
     else:
         print("Error subscribing to topic [{}]".format(twist_topic))
