@@ -110,3 +110,17 @@ py_binary(
   ],
   visibility = ["//visibility:public"],
 )
+
+#———————————————————————————————————————————————————————————————————————
+
+py_binary(
+  name = "ign_topic_list",
+  srcs = ["ign_topic_list.py"],
+  data = [
+    "//python_ignition:ignition_transport.so",
+    "@com_google_protobuf//:proto_api",
+  ],
+  deps = [
+  ],
+  visibility = ["//visibility:public"],
+)

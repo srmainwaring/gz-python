@@ -83,6 +83,12 @@ void define_transport_node(py::object module)
           pybind11::arg("msg_type_name"),
           pybind11::arg("options"))
       .def("subscribed_topics", &Node::SubscribedTopics)
+      .def("topic_list", [](Node &_node)
+          {
+            std::vector<std::string> topics;
+            _node.TopicList(topics);
+            return topics;
+          })
       ;
 
   py::class_<ignition::transport::Node::Publisher>(module, "Publisher")
@@ -93,7 +99,7 @@ void define_transport_node(py::object module)
       .def("throttled_update_ready",
           &ignition::transport::Node::Publisher::ThrottledUpdateReady)
       .def("has_connections",
-          &ignition::transport::Node::Publisher::HasConnections);
+          &ignition::transport::Node::Publisher::HasConnections)
       ;
 }
 
@@ -102,4 +108,9 @@ PYBIND11_MODULE(ignition_transport, m) {
   pybind11_protobuf::ImportNativeProtoCasters();
 
   define_transport_node(m);
+
+  m.def("version", []() -> std::string {
+    return IGNITION_TRANSPORT_VERSION_FULL;
+  });
+
 }
