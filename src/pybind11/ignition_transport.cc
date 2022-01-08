@@ -69,6 +69,7 @@ namespace py = pybind11;
 //     // forward to ignition::transport::Node::SubscribeRaw
 //   }
 
+// TODO(srmainwaring): remove when Node.Subscribe is implemented
 // callback function example
 //
 // https://pybind11.readthedocs.io/en/stable/advanced/cast/functional.html
@@ -133,10 +134,20 @@ void define_transport_node(py::object module)
           pybind11::arg("msg_type_name"),
           pybind11::arg("options"))
       .def("advertised_topics", &Node::AdvertisedTopics)
-      // .def("subscribe", &ignition::transport::Node::Subscribe,
-      //     pybind11::arg("topic"),
-      //     pybind11::arg("callback"),
-      //     pybind11::arg("options"))
+      .def("subscribe", [](
+          Node &node,
+          std::string &topic,
+          std::function<void(const google::protobuf::Message &_msg)> &callback,
+          std::string &msg_type_name,
+          const SubscribeOptions)
+          {
+              std::cout << "Subscribing to " << topic << "\n";
+              return true;
+          },
+          pybind11::arg("topic"),
+          pybind11::arg("callback"),
+          pybind11::arg("msg_type_name"),
+          pybind11::arg("options"))
       .def("subscribed_topics", &Node::SubscribedTopics)
       ;
 
@@ -150,14 +161,6 @@ void define_transport_node(py::object module)
       .def("has_connections",
           &ignition::transport::Node::Publisher::HasConnections);
       ;
-
-  py::class_<PubSub>(module, "PubSub")
-      .def(py::init<>())
-      .def("publish", &PubSub::Publish,
-          pybind11::arg("msg"))
-      .def("subscribe", &PubSub::Subscribe,
-          pybind11::arg("callback"))
-      ;
 }
 
 /// \brief Define the ignition_transport module
@@ -165,4 +168,9 @@ PYBIND11_MODULE(ignition_transport, m) {
   pybind11_protobuf::ImportNativeProtoCasters();
 
   define_transport_node(m);
+
+  m.def("wait_for_shutdown",
+      &ignition::transport::waitForShutdown,
+      "Block the current thread until a SIGINT or SIGTERM is received."
+  );
 }

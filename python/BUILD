@@ -63,6 +63,19 @@ py_binary(
 )
 
 py_binary(
+  name = "subscriber",
+  srcs = ["subscriber.py"],
+  data = [
+    "//python_ignition:ignition_transport.so",
+    "@com_google_protobuf//:proto_api",
+  ],
+  deps = [
+    "@ign-msgs9//:stringmsg_py_pb2",
+  ],
+  visibility = ["//visibility:public"],
+)
+
+py_binary(
   name = "rover_publisher",
   srcs = ["rover_publisher.py"],
   data = [
