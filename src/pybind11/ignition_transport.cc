@@ -15,6 +15,7 @@
  *
 */
 
+#include <ignition/msgs.hh>
 #include <ignition/transport.hh>
 
 #include <pybind11/pybind11.h>
@@ -57,6 +58,58 @@ void define_transport_node(py::object module)
           &SubscribeOptions::SetMsgsPerSec)
       ;
 
+  py::class_<Publisher>(
+      module, "BasePublisher")
+      .def(py::init<>())
+      .def_property("topic",
+          &Publisher::Topic,
+          &Publisher::SetTopic)
+      .def_property("addr",
+          &Publisher::Addr,
+          &Publisher::SetAddr)
+      .def_property("puuid",
+          &Publisher::PUuid,
+          &Publisher::SetPUuid)
+      .def_property("nuuid",
+          &Publisher::NUuid,
+          &Publisher::SetNUuid)
+      // virtual
+      .def_property("options",
+          &Publisher::Options,
+          &Publisher::SetOptions)
+      // virtual
+      .def("discovery", [](
+          Publisher &_pub)
+          {
+            ignition::msgs::Discovery msg;
+            _pub.FillDiscovery(msg);
+            return msg;
+          })
+      ;
+
+  py::class_<MessagePublisher, Publisher>(
+      module, "MessagePublisher")
+      .def(py::init<>())
+      .def_property("ctrl",
+          &MessagePublisher::Ctrl,
+          &MessagePublisher::SetCtrl)
+      .def_property("msg_type_name",
+          &MessagePublisher::MsgTypeName,
+          &MessagePublisher::SetMsgTypeName)
+      // virtual
+      .def_property("options",
+          &MessagePublisher::Options,
+          &MessagePublisher::SetOptions)
+      // virtual
+      .def("discovery", [](
+          MessagePublisher &_pub)
+          {
+            ignition::msgs::Discovery msg;
+            _pub.FillDiscovery(msg);
+            return msg;
+          })
+      ;
+
   py::class_<Node>(module, "Node")
       .def(py::init<>())
       .def("advertise", static_cast<
@@ -71,9 +124,9 @@ void define_transport_node(py::object module)
       .def("advertised_topics", &Node::AdvertisedTopics)
       .def("subscribe", [](
           Node &_node,
-          std::string &_topic,
+          const std::string &_topic,
           std::function<void(const google::protobuf::Message &_msg)> &_callback,
-          std::string &_msg_type_name,
+          const std::string &_msg_type_name,
           const SubscribeOptions &_opts)
           {
             return _node.Subscribe(_topic, _callback, _opts);
@@ -83,12 +136,24 @@ void define_transport_node(py::object module)
           pybind11::arg("msg_type_name"),
           pybind11::arg("options"))
       .def("subscribed_topics", &Node::SubscribedTopics)
-      .def("topic_list", [](Node &_node)
+      .def("unsubscribe", &Node::Unsubscribe,
+          pybind11::arg("topic"))
+      .def("topic_list", [](
+          Node &_node)
           {
             std::vector<std::string> topics;
             _node.TopicList(topics);
             return topics;
           })
+      .def("topic_info", [](
+          Node &_node,
+          const std::string &_topic)
+          {
+            std::vector<MessagePublisher> publishers;
+            _node.TopicInfo(_topic, publishers);
+            return publishers;
+          },
+          pybind11::arg("topic"))
       ;
 
   py::class_<ignition::transport::Node::Publisher>(module, "Publisher")
