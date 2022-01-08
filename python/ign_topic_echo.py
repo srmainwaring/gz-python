@@ -17,16 +17,22 @@
 '''
 Replicate the ign_tools command:
 
-$ ign topic -i -t /topic
+$ ign topic -i -e /topic
 '''
 
 import argparse
+import time
 
+from python_ignition.ignition_transport import SubscribeOptions
 from python_ignition.ignition_transport import Node
+
+# callback - prints the raw message
+def cb(msg):
+    print(msg)
 
 def main():
     # process command line
-    parser = argparse.ArgumentParser(description="Get info about a topic.")
+    parser = argparse.ArgumentParser(description="Output data to screen.")
     parser.add_argument("-t", "--topic",
         metavar="topic", required=True, help="Name of a topic")
     args = parser.parse_args()
@@ -37,14 +43,22 @@ def main():
     # create a transport node
     node = Node()
 
-    # get list of topic info
-    topic_info_list = node.topic_info(topic)
+    msg_type_name = "google.protobuf.Message"
+    sub_options = SubscribeOptions()
 
-    # display address and message type
-    print("Publishers [Address, Message Type]:")
-    for topic_info in topic_info_list:
-        print("  {}, {}".format(topic_info.addr, topic_info.msg_type_name))
+    # subscribe to a topic by registering a callback
+    if node.subscribe(topic, cb, msg_type_name, sub_options):
+        print("Subscribing to topic [{}]".format(topic))
+    else:
+        print("Error subscribing to topic [{}]".format(topic))
+        return
 
+    # wait for shutdown
+    try:
+      while True:
+        time.sleep(0.001)
+    except KeyboardInterrupt:
+      pass
 
 if __name__ == "__main__":
     main()
