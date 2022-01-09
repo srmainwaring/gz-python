@@ -15,8 +15,11 @@
  *
 */
 
+#include <unistd.h>
+
 #include <iostream>
 #include <string>
+
 #include <ignition/msgs.hh>
 #include <ignition/transport.hh>
 
@@ -27,40 +30,37 @@ void cb(const google::protobuf::Message &_msg)
 
 void print_usage()
 {
-  std::cout << "Must supply topic using '-t' or '--topic'" << std::endl;
-}
-
-void print_missing_topic()
-{
-  std::cout << "Must supply a valid topic" << std::endl;
+  std::cout << "Must supply topic using '-t'" << std::endl;
 }
 
 int main(int argc, char **argv)
 {
-  ignition::transport::Node node;
+  // parse command line
+  std::string topic;
 
-  // parse arguments: expect either '-t /topic' or '--topic /topic'
-  std::string topic = "";
-  if (argc > 1)
+  if (argc < 2)
   {
-    std::string arg(argv[1]);
-    if (arg.compare("-t") != 0 && arg.compare("--topic") != 0)
-    {
-      print_usage();
-      return -1;
-    }
-  }
-  if (argc > 2)
-  {
-    topic = argv[2];
-  }
-  else
-  {
-    print_missing_topic();
+    print_usage();
     return -1;
   }
+  int opt = 0;
+  while ((opt = getopt(argc, argv, "t:")) != -1) 
+  {
+     switch (opt) 
+     {
+      case 't':
+        topic = optarg;
+        break;
+      default:
+        print_usage();
+        return -1;
+     }
+  }
 
-  // Subscribe to a topic by registering a callback.
+  // create node
+  ignition::transport::Node node;
+
+  // subscribe to a topic by registering a callback.
   if (!node.Subscribe(topic, cb))
   {
     std::cerr << "Error subscribing to topic [" << topic << "]" << std::endl;
