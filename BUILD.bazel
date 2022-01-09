@@ -119,9 +119,9 @@ cc_library(
   hdrs = ["include/ignition_msgs.hh"],
   includes = ["include"],
   deps = [
-      "@ign-msgs9//:time_cc_proto",
-      "@ign-msgs9//:topic_info_cc_proto",
-      "@ign-msgs9//:wrench_cc_proto",
+    "@ign-msgs9//:time_cc_proto",
+    "@ign-msgs9//:topic_info_cc_proto",
+    "@ign-msgs9//:wrench_cc_proto",
   ],
   visibility = ["//visibility:public"],
 )
@@ -133,7 +133,21 @@ cc_binary(
   srcs = ["src/main.cc"],
   includes = ["include"],
   deps = [
-      ":ignition_msgs_lib",
+    ":ignition_msgs_lib",
+  ],
+  visibility = ["//visibility:public"],
+)
+
+#———————————————————————————————————————————————————————————————————————
+# ign_topic_echo
+# 
+cc_binary(
+  name = "ign_topic_echo",
+  srcs = ["src/ign_topic_echo.cc"],
+  deps = [
+    "//ign_msgs:ign_msgs",
+    "//ign_transport:ign_transport",
+    "@com_google_protobuf//:protobuf",
   ],
   visibility = ["//visibility:public"],
 )
@@ -145,9 +159,9 @@ pybind_extension(
   srcs = ["src/pybind11/ignition_msgs.cc"],
   includes = ["include"],
   deps = [
-      ":ignition_msgs_lib",
-      "@pybind11_protobuf//pybind11_protobuf:native_proto_caster",
-      "@com_google_protobuf//:protobuf",
+    ":ignition_msgs_lib",
+    "@pybind11_protobuf//pybind11_protobuf:native_proto_caster",
+    "@com_google_protobuf//:protobuf",
   ],
   visibility = ["//visibility:public"],
 )
@@ -161,9 +175,10 @@ pybind_extension(
   name = "ignition_transport",
   srcs = ["src/pybind11/ignition_transport.cc"],
   deps = [
-      "//ign_transport:ign_transport",
-      "@pybind11_protobuf//pybind11_protobuf:native_proto_caster",
-      "@com_google_protobuf//:protobuf",
+    "//ign_transport:ign_transport",
+    "@pybind11_protobuf//pybind11_protobuf:native_proto_caster",
+    "@com_google_protobuf//:protobuf",
   ],
   visibility = ["//visibility:public"],
 )
+
