@@ -6,12 +6,15 @@
 # ign_msg_py_deps: list of all the generated Python protobuf libraries
 # 
 ign_msg_py_deps = [
+  "@ign-msgs9//:any_py_pb2",
+  "@ign-msgs9//:color_py_pb2",
   "@ign-msgs9//:cmd_vel2d_py_pb2",
   "@ign-msgs9//:double_py_pb2",
   "@ign-msgs9//:double_v_py_pb2",
   "@ign-msgs9//:float_py_pb2",
   "@ign-msgs9//:float_v_py_pb2",
   "@ign-msgs9//:header_py_pb2",
+  "@ign-msgs9//:param_py_pb2",
   "@ign-msgs9//:pid_py_pb2",
   "@ign-msgs9//:pose_py_pb2",
   "@ign-msgs9//:pose_v_py_pb2",
