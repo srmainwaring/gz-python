@@ -196,7 +196,7 @@ A number of examples in C++ and Python are provided.
 
 ---
 
-`src/msg_example.cc` is a version of the [`ign-msgs` tutorial example](https://ignitionrobotics.org/api/msgs/8.1/cppgetstarted.html):
+`src/msg_example.cc` is a copy of the [`ign-msgs` tutorial example](https://ignitionrobotics.org/api/msgs/8.1/cppgetstarted.html):
 
 ```bash
 ./bazel-bin/python_ignition/msg_example
@@ -204,7 +204,7 @@ A number of examples in C++ and Python are provided.
 
 ---
 
-`src/publisher.cc` and `src/subscriber.cc` is a version of the [`ign-transport` messages tutorial example](https://ignitionrobotics.org/api/transport/11.0/messages.html).
+`src/publisher.cc` and `src/subscriber.cc` are copies of the [`ign-transport` messages tutorial example](https://ignitionrobotics.org/api/transport/11.0/messages.html).
 
 From terminal 1:
 
