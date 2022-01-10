@@ -28,15 +28,14 @@ Confirm the installed version is `3.19`.
 
 ### Setting up the workspace
 
-Make a directory to contain all this package and all the Ignition packages and dependencies:
+Make a directory to contain this package and all the Ignition packages and dependencies:
 
 ```bash
 mkdir ~/ignition/
 cd ~/ignition/
 ```
 
-Clone each of the packages using the `.repos` file and [vcstool](https://github.com/dirk-thomas/vcstool). The forked version of `ign-bazel` contains modified build rules and repo references
-for macOS.
+Clone each of the packages using the `.repos` file and [vcstool](https://github.com/dirk-thomas/vcstool). The forked version of `ign-bazel` contains modified build rules and repo references for macOS.
 
 ```bash
 wget https://raw.githubusercontent.com/srmainwaring/ign-bazel/bazel-macos/example/bazel.repos
@@ -53,9 +52,7 @@ ln -sf ./ign_bazel/example/bazelrc.example ./.bazelrc
 ln -sf ./ign_bazel/example/ign-msgs9.BUILD.example ./ign-msgs9.BUILD
 ```
 
-Finally, [`pybind11_protobuf`](https://github.com/pybind/pybind11_protobuf) requires
-a patch to the protobuf archive which must be available in the subdirectory
-`~/ignition/external`. It must be copied rather than symlinked:
+Finally, [`pybind11_protobuf`](https://github.com/pybind/pybind11_protobuf) requires a patch to the protobuf archive which must be available in the subdirectory `~/ignition/external`. It must be copied rather than symlinked:
 
 ```bash
 cd ~/ignition
@@ -90,8 +87,7 @@ will result in a number of errors.
 
 ### Install Ignition
 
-Follow the [Ignition Garden](https://ignitionrobotics.org/docs/garden) instructions for a source installation. In the following we assume the Ignition source is locked in the
-workspace directory `~/workspace/src`
+Follow the [Ignition Garden](https://ignitionrobotics.org/docs/garden) instructions for a source installation. In the following we assume the Ignition source is located in the workspace directory `~/workspace/src`.
 
 ### Install python-ignition
 
@@ -193,10 +189,12 @@ py_binary(
 
 ### Ignition transport bindings 
 
-The Python for `ign-transport` are contained in a module called `ign_transport`.
+The Python bindings for `ign-transport` are contained in a module called `ign_transport`.
 
 Because of the way Bazel names and locates packages for subdirectories, the module
-is located at `~/ignition/bazel-bin/python_ignition/ign_transport.so`, however Bazel sets the Python path to `~/ignition/bazel-bin`. To avoid prefixing all the module imports with `python_ignition` add the module location the Python path with:
+is located at `~/ignition/bazel-bin/python_ignition/ign_transport.so`, however Bazel sets the Python path
+to `~/ignition/bazel-bin`. To avoid prefixing all the module imports with `python_ignition` add the module
+location to the Python path with:
 
 ```bash
 export PYTHONPATH=~/ignition/bazel-bin/python_ignition:$PYTHONPATH
@@ -302,10 +300,11 @@ libprotoc 3.19.1
 
 ### Protobuf generated Python libraries
 
-There are some issues when using the C++ implementation of the generated
-Python protobuf library. The `brew` installation of `protobuf` will default to
-use the C++ implementation. To enable the Python implementation set the environment variable
-before building the project:
+The `brew` installation of `protobuf` defaults to use the C++ implementation
+of the generated Python protobuf library. When using this with `pybind11_protobuf`
+there are some cases when C++ wrapped protobuf objects returned from an extension module are not
+recognised as their Python equivalents. The Python implementation will work in these cases
+and to enable this set the following environment variable before building the project:
 
 ```bash
 export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
