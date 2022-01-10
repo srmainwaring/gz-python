@@ -63,7 +63,7 @@ mkdir external
 cp ./python_ignition/external/com_google_protobuf_build.patch external
 ```
 
-### Building with Bazel
+### Build with Bazel
 
 Currently our use of `pybind11_protobuf` requires the Python implementation of the Python protobuf generator. This is configured with the environment variable:  
 
@@ -86,7 +86,32 @@ bazel build //...
 
 will result in a number of errors.
 
+## Building with CMake
 
+### Install Ignition
+
+Follow the [Ignition Garden](https://ignitionrobotics.org/docs/garden) instructions for a source installation. In the following we assume the Ignition source is locked in the
+workspace directory `~/workspace/src`
+
+### Install python-ignition
+
+Clone this repo into the workspace source directory and update external submodules:
+
+```bash
+cd ~/workspace/src
+git clone https://github.com/srmainwaring/python-ignition.git -b bazel-macos/python-ignition
+cd python-ignition
+git submodule update --init --recursive
+```
+
+### Build with CMake
+
+```bash
+mkdir -p ~/workspace/src/python-ignition/build
+cd ~/workspace/src/python-ignition/build
+cmake ..
+make
+```
 
 ## Usage
 
@@ -282,7 +307,7 @@ The table summarises the dependencies (repo and branch) on the Ignition librarie
 | library | repo | branch | build | test |
 | --- | --- | --- | --- | --- |
 | | | | | |
-|python_ignition|https://github.com/srmainwaring/python-ignition|bazel-macos/python-ignition|pass|-|
+|python_ignition|https://github.com/srmainwaring/python-ignition|main|pass|-|
 | | | | | |
 |ign-bazel|https://github.com/srmainwaring/ign-bazel|bazel-macos|pass|pass|
 |ign-math|https://github.com/srmainwaring/ign-math|bazel-macos/ign-math6|pass|pass|
