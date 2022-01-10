@@ -21,7 +21,7 @@ find_package(Protobuf REQUIRED)
 # 
 # macOS: $ brew install abseil
 # 
-find_package(absl REQUIRED)
+# find_package(absl REQUIRED)
 
 #============================================================================
 # Find pybind11
@@ -30,7 +30,7 @@ find_package(absl REQUIRED)
 # macOS: $ brew install pybind11
 # 
 find_package(Python COMPONENTS Interpreter Development)
-find_package(pybind11 CONFIG)
+# find_package(pybind11 CONFIG)
 
 #============================================================================
 # Find the ign-msgs library
@@ -44,7 +44,7 @@ find_package(ignition-transport${IGN_TRANSPORT_VER} REQUIRED)
 #============================================================================
 # subdirectories for external dependencies
 
-# add_subdirectory(external)
+add_subdirectory(external)
 
 #============================================================================
 # ignition_msgs_lib C++ library
@@ -72,16 +72,14 @@ pybind11_add_module(ignition_msgs MODULE
 target_link_libraries(ignition_msgs
   PRIVATE
     ignition_msgs_lib
-    # pybind11_native_proto_caster
-    # pybind11_proto
-    # pybind11_proto_utils
-    # pybind11_proto_cast_util
+    ${Protobuf_LIBRARY}
+    pybind11_native_proto_caster
 )
 
 target_include_directories(ignition_msgs
   PRIVATE
     ${PROJECT_SOURCE_DIR}/include
-    # ${PROJECT_SOURCE_DIR}/external/pybind11_protobuf
+    ${PROJECT_SOURCE_DIR}/external/pybind11_protobuf
 )
 
 add_dependencies(ignition_msgs
@@ -100,16 +98,13 @@ target_link_libraries(ignition_transport
     ignition-msgs${IGN_MSGS_VER}::ignition-msgs${IGN_MSGS_VER}
     ignition-transport${IGN_TRANSPORT_VER}::ignition-transport${IGN_TRANSPORT_VER}
     ${Protobuf_LIBRARY}
-    # pybind11_native_proto_caster
-    # pybind11_proto
-    # pybind11_proto_utils
-    # pybind11_proto_cast_util
+    pybind11_native_proto_caster
 )
 
-target_include_directories(ignition_msgs
+target_include_directories(ignition_transport
   PRIVATE
     ${Protobuf_INCLUDE_DIR}
-    # ${PROJECT_SOURCE_DIR}/external/pybind11_protobuf
+    ${PROJECT_SOURCE_DIR}/external/pybind11_protobuf
 )
 
 #============================================================================

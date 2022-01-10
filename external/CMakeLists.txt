@@ -1,1 +1,1 @@
-# add_subdirectory(pybind11_protobuf)
+add_subdirectory(pybind11_protobuf)
