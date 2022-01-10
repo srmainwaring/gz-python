@@ -11,6 +11,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # macOS: $ brew install protobuf
 # 
 find_package(Protobuf REQUIRED)
+# message("Protobuf_FOUND: ${Protobuf_FOUND}")
+# message("Protobuf_VERSION: ${Protobuf_VERSION}")
+# message("Protobuf_LIBRARY: ${Protobuf_LIBRARY}")
+# message("Protobuf_INCLUDE_DIR: ${Protobuf_INCLUDE_DIR}")
 
 #============================================================================
 # Find google abseil
@@ -38,68 +42,101 @@ set(IGN_TRANSPORT_VER 12)
 find_package(ignition-transport${IGN_TRANSPORT_VER} REQUIRED)
 
 #============================================================================
-# subdirectories for external dependencies and protobuf definitions
+# subdirectories for external dependencies
 
 # add_subdirectory(external)
-# add_subdirectory(proto)
 
 #============================================================================
-# msgs_tools
+# ignition_msgs_lib C++ library
 
-# add_library(msgs_tools src/msgs_tools.cc)
+add_library(ignition_msgs_lib src/ignition_msgs.cc)
 
-# target_link_libraries(msgs_tools ign_proto ${PROTOBUF_LIBRARY})
+target_link_libraries(ignition_msgs_lib
+  ignition-msgs${IGN_MSGS_VER}::ignition-msgs${IGN_MSGS_VER}
+)
 
-# target_include_directories(msgs_tools
-#   PRIVATE
-#     ${CMAKE_CURRENT_BINARY_DIR}
-#     ${PROJECT_SOURCE_DIR}/include
-#     ${Protobuf_INCLUDE_DIR}
-# )
+target_include_directories(ignition_msgs_lib
+  PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+)
 
 #============================================================================
 # ignition_msgs Python extension module
 
-# pybind11_add_module(msgs_tools_module MODULE
-#   src/pybind11/msgs_tools_module.cc
-# )
+pybind11_add_module(ignition_msgs MODULE
+  src/pybind11/ignition_msgs.cc
+)
 
-# target_include_directories(msgs_tools_module
-#   PRIVATE
-#     ${CMAKE_CURRENT_BINARY_DIR}
-#     ${PROJECT_SOURCE_DIR}/external/pybind11_protobuf
-#     ${PROJECT_SOURCE_DIR}/include
-#     ${PROTOBUF_INCLUDE_DIR}
-# )
-  
-# target_link_libraries(msgs_tools_module
-#   PRIVATE
-#     pybind11_native_proto_caster
-#     pybind11_proto
-#     pybind11_proto_utils
-#     pybind11_proto_cast_util
-#     ign_proto
-#     msgs_tools
-# )
+target_link_libraries(ignition_msgs
+  PRIVATE
+    ignition_msgs_lib
+    # pybind11_native_proto_caster
+    # pybind11_proto
+    # pybind11_proto_utils
+    # pybind11_proto_cast_util
+)
 
-# add_dependencies(msgs_tools_module msgs_tools)
+target_include_directories(ignition_msgs
+  PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+    # ${PROJECT_SOURCE_DIR}/external/pybind11_protobuf
+)
+
+add_dependencies(ignition_msgs
+  ignition_msgs_lib
+)
+
+#============================================================================
+# ignition_transport Python extension module
+
+pybind11_add_module(ignition_transport MODULE
+  src/pybind11/ignition_transport.cc
+)
+
+target_link_libraries(ignition_transport
+  PRIVATE
+    ignition-msgs${IGN_MSGS_VER}::ignition-msgs${IGN_MSGS_VER}
+    ignition-transport${IGN_TRANSPORT_VER}::ignition-transport${IGN_TRANSPORT_VER}
+    ${Protobuf_LIBRARY}
+    # pybind11_native_proto_caster
+    # pybind11_proto
+    # pybind11_proto_utils
+    # pybind11_proto_cast_util
+)
+
+target_include_directories(ignition_msgs
+  PRIVATE
+    ${Protobuf_INCLUDE_DIR}
+    # ${PROJECT_SOURCE_DIR}/external/pybind11_protobuf
+)
 
 #============================================================================
 # main
 
-# add_executable(main src/main.cc)
+add_executable(main src/main.cc)
 
-# target_link_libraries(main
-#   ign_proto msgs_tools
-#   ${PROTOBUF_LIBRARY}
-# )
+target_link_libraries(main
+  ignition_msgs_lib
+  ignition-msgs${IGN_MSGS_VER}::ignition-msgs${IGN_MSGS_VER}
+)
 
-# target_include_directories(main
-#   PRIVATE
-#     ${CMAKE_CURRENT_BINARY_DIR}
-#     ${PROJECT_SOURCE_DIR}/include
-#     ${Protobuf_INCLUDE_DIR}
-# )
+target_include_directories(main
+  PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+)
+
+add_dependencies(main
+  ignition_msgs_lib
+)
+
+#============================================================================
+# msg_example
+
+add_executable(msg_example src/msg_example.cc)
+
+target_link_libraries(msg_example
+  ignition-msgs${IGN_MSGS_VER}::ignition-msgs${IGN_MSGS_VER}
+)
 
 #============================================================================
 # publisher

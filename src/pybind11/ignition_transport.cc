@@ -22,7 +22,7 @@
 #include <pybind11/functional.h>
 #include <pybind11/stl.h>
 
-#include "pybind11_protobuf/native_proto_caster.h"
+// #include "pybind11_protobuf/native_proto_caster.h"
 
 #include <google/protobuf/message.h>
 
@@ -33,7 +33,7 @@ namespace py = pybind11;
 /// \brief Define pybind11 bindings for ignition::transport objects
 void define_transport_node(py::object module)
 {
-  pybind11_protobuf::ImportNativeProtoCasters();
+  // pybind11_protobuf::ImportNativeProtoCasters();
 
   using namespace ignition;
   using namespace transport;
@@ -170,7 +170,7 @@ void define_transport_node(py::object module)
 
 /// \brief Define the ignition_transport module
 PYBIND11_MODULE(ignition_transport, m) {
-  pybind11_protobuf::ImportNativeProtoCasters();
+  // pybind11_protobuf::ImportNativeProtoCasters();
 
   define_transport_node(m);
 

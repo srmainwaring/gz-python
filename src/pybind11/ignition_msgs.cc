@@ -17,14 +17,14 @@
 
 #include <pybind11/pybind11.h>
 
-#include "pybind11_protobuf/native_proto_caster.h"
+// #include "pybind11_protobuf/native_proto_caster.h"
 
 #include "ignition_msgs.hh"
 
 namespace py = pybind11;
 
 PYBIND11_MODULE(ignition_msgs, m) {
-  pybind11_protobuf::ImportNativeProtoCasters();
+  // pybind11_protobuf::ImportNativeProtoCasters();
 
   m.def("make_time", &MakeTime);
   m.def("take_time", &TakeTime, pybind11::arg("msg"));
