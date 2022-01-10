@@ -49,7 +49,9 @@ find_package(ignition-transport${IGN_TRANSPORT_VER} REQUIRED)
 #============================================================================
 # ignition_msgs_lib C++ library
 
-add_library(ignition_msgs_lib src/ignition_msgs.cc)
+add_library(ignition_msgs_lib SHARED
+  src/ignition_msgs.cc
+)
 
 target_link_libraries(ignition_msgs_lib
   ignition-msgs${IGN_MSGS_VER}::ignition-msgs${IGN_MSGS_VER}
