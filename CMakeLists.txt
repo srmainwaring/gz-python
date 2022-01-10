@@ -184,3 +184,9 @@ target_link_libraries(ign_topic_echo
   ignition-msgs${IGN_MSGS_VER}::ignition-msgs${IGN_MSGS_VER}
   ignition-transport${IGN_TRANSPORT_VER}::ignition-transport${IGN_TRANSPORT_VER}
 )
+
+#============================================================================
+# generate protobuf Python bindings
+
+add_subdirectory(proto/ignition/msgs)
+
