@@ -19,8 +19,8 @@ import typing
 
 from ignition.msgs.stringmsg_pb2 import StringMsg
 
-from python_ignition.ignition_transport import SubscribeOptions
-from python_ignition.ignition_transport import Node
+from ignition_transport import SubscribeOptions
+from ignition_transport import Node
 
 def cb(msg: StringMsg) -> None:
     print("Msg: [{}] from Python".format(msg.data))

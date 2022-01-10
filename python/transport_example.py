@@ -22,11 +22,10 @@ from ignition.msgs.twist_pb2 import Twist
 from ignition.msgs.vector3d_pb2 import Vector3d
 from ignition.msgs.wrench_pb2 import Wrench
 
-import python_ignition.ignition_transport as ign
-from python_ignition.ignition_transport import AdvertiseMessageOptions
-from python_ignition.ignition_transport import SubscribeOptions
-from python_ignition.ignition_transport import Node
-from python_ignition.ignition_transport import Publisher
+from ignition_transport import AdvertiseMessageOptions
+from ignition_transport import SubscribeOptions
+from ignition_transport import Node
+from ignition_transport import Publisher
 
 from google.protobuf.internal import api_implementation
 
@@ -114,17 +113,6 @@ def main():
     msg_type_name = Wrench.DESCRIPTOR.full_name
     pub = node.advertise(topic, msg_type_name, pub_options)
     pub.publish(wrench_msg)
-
-    # print("----------------------------------------")
-    def on_msg(msg):
-        print(msg)
-
-    # register callback
-    # pubsub = ign.PubSub()
-    # pubsub.subscribe(on_msg)
-
-    # publish (should call on_msg)
-    # pubsub.publish(wrench_msg)
 
     print("----------------------------------------")
     def on_force_torque(msg):
