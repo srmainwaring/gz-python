@@ -20,7 +20,7 @@ Replicate the ign_tools command:
 $ ign topic -l
 '''
 
-from python_ignition.ignition_transport import Node
+from ignition_transport import Node
 
 def main():
     # create a transport node

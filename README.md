@@ -115,6 +115,8 @@ make
 
 ## Usage
 
+### Ignition msg bindings 
+
 The Bazel build file `ign-msgs9.BUILD` defines targets for a selection of messages.
 For example the targets for `proto/ignition/msgs/time.proto` are:
 
@@ -189,10 +191,20 @@ py_binary(
 )
 ```
 
+### Ignition transport bindings 
+
+The Python for `ign-transport` are contained in a module called `ign_transport`.
+
+Because of the way Bazel names and locates packages for subdirectories, the module
+is located at `~/ignition/bazel-bin/python_ignition/ign_transport.so`, however Bazel sets the Python path to `~/ignition/bazel-bin`. To avoid prefixing all the module imports with `python_ignition` add the module location the Python path with:
+
+```bash
+export PYTHONPATH=~/ignition/bazel-bin/python_ignition:$PYTHONPATH
+```
+
 ## Examples
 
 A number of examples in C++ and Python are provided.
-
 
 ---
 
