@@ -11,17 +11,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # macOS: $ brew install protobuf
 # 
 find_package(Protobuf REQUIRED)
-# message("Protobuf_FOUND: ${Protobuf_FOUND}")
-# message("Protobuf_VERSION: ${Protobuf_VERSION}")
-# message("Protobuf_LIBRARY: ${Protobuf_LIBRARY}")
-# message("Protobuf_INCLUDE_DIR: ${Protobuf_INCLUDE_DIR}")
-
-#============================================================================
-# Find google abseil
-# 
-# macOS: $ brew install abseil
-# 
-# find_package(absl REQUIRED)
 
 #============================================================================
 # Find pybind11

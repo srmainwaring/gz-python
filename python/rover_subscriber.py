@@ -27,12 +27,10 @@ from ignition_transport import SubscribeOptions
 
 
 def pose_cb(msg: Pose) -> None:
-    print("Got pose")
-    # print("{}".format(msg))
+    print("{}".format(msg))
 
 def twist_cb(msg: Twist) -> None:
-    print("Got twist")
-    # print("{}".format(msg))
+    print("{}".format(msg))
 
 def main():
     # create a transport node

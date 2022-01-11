@@ -40,7 +40,7 @@ def main():
     pose_pub = node.advertise(
         pose_topic, pose_msg_type_name, pub_options)
     if pose_pub.valid():
-        print("Advertising {} on topic[{}]".format(
+        print("Advertising {} on topic [{}]".format(
             pose_msg_type_name, pose_topic))
     else:
         print("Error advertising topic [{}]".format(pose_topic))
@@ -50,7 +50,7 @@ def main():
     twist_pub = node.advertise(
         twist_topic, twist_msg_type_name, pub_options)
     if twist_pub.valid():
-        print("Advertising {} on topic[{}]".format(
+        print("Advertising {} on topic [{}]".format(
             twist_msg_type_name, twist_topic))
     else:
         print("Error advertising topic [{}]".format(twist_topic))
