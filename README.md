@@ -42,7 +42,7 @@ generated Python protobuf bindings.
 
 ```bash
 cd ~/workspace/src/python-ignition
-export PYTHONPATH=${PYTHONPATH}:$(pwd)/build::$(pwd)/build/python
+export PYTHONPATH=${PYTHONPATH}:$(pwd)/build/python
 ```
 
 ## Usage
@@ -64,7 +64,7 @@ print(msg)
 
 ### `ign-transport` bindings 
 
-The Python bindings for `ign-transport` are contained in a module called `ign_transport`.
+The Python bindings for `ign-transport` are contained in a module called `transport`.
 The object naming and usage for the most part follows the C++ interface,
 so the C++ Ignition Tutorials are a good guide on how to use the library.
 
@@ -73,9 +73,8 @@ Publish:
 ```python
 from ignition.msgs.stringmsg_pb2 import StringMsg
 
-from ignition_transport import AdvertiseMessageOptions
-from ignition_transport import Node
-from ignition_transport import Publisher
+from ignition.transport import AdvertiseMessageOptions
+from ignition.transport import Node
 
 # Create a transport node
 node = Node()
@@ -100,8 +99,8 @@ import typing
 
 from ignition.msgs.stringmsg_pb2 import StringMsg
 
-from ignition_transport import SubscribeOptions
-from ignition_transport import Node
+from ignition.transport import SubscribeOptions
+from ignition.transport import Node
 
 def cb(msg: StringMsg) -> None:
     print("Msg: [{}] from Python".format(msg.data))

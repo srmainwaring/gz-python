@@ -22,7 +22,7 @@
 #include <pybind11/functional.h>
 #include <pybind11/stl.h>
 
-#include "pybind11_protobuf/native_proto_caster.h"
+#include <pybind11_protobuf/native_proto_caster.h>
 
 #include <google/protobuf/message.h>
 
@@ -30,13 +30,19 @@
 
 namespace py = pybind11;
 
-/// \brief Define pybind11 bindings for ignition::transport objects
-void define_transport_node(py::object module)
+namespace ignition
 {
-  pybind11_protobuf::ImportNativeProtoCasters();
-
+namespace transport
+{
+namespace python
+{
+/// \brief Define pybind11 bindings for ignition::transport objects
+void define_transport_node(py::module_ module)
+{
   using namespace ignition;
   using namespace transport;
+
+  pybind11_protobuf::ImportNativeProtoCasters();
 
   py::class_<AdvertiseMessageOptions>(
       module, "AdvertiseMessageOptions")
@@ -59,7 +65,7 @@ void define_transport_node(py::object module)
       ;
 
   py::class_<Publisher>(
-      module, "BasePublisher")
+      module, "Publisher")
       .def(py::init<>())
       .def_property("topic",
           &Publisher::Topic,
@@ -110,7 +116,7 @@ void define_transport_node(py::object module)
           })
       ;
 
-  py::class_<Node>(module, "Node")
+  auto node = py::class_<Node>(module, "Node")
       .def(py::init<>())
       .def("advertise", static_cast<
           Node::Publisher (Node::*) (
@@ -156,7 +162,8 @@ void define_transport_node(py::object module)
           pybind11::arg("topic"))
       ;
 
-  py::class_<ignition::transport::Node::Publisher>(module, "Publisher")
+  // register Node::Publisher as a subclass of Node
+  py::class_<ignition::transport::Node::Publisher>(node, "Publisher")
       .def(py::init<>())
       .def("valid", &ignition::transport::Node::Publisher::Valid)
       .def("publish", &ignition::transport::Node::Publisher::Publish,
@@ -167,12 +174,17 @@ void define_transport_node(py::object module)
           &ignition::transport::Node::Publisher::HasConnections)
       ;
 }
+}
+}
+}
 
 /// \brief Define the ignition_transport module
-PYBIND11_MODULE(ignition_transport, m) {
+PYBIND11_MODULE(transport, m) {
   pybind11_protobuf::ImportNativeProtoCasters();
 
-  define_transport_node(m);
+  m.doc() = "Ignition Transport Python Library.";
+
+  ignition::transport::python::define_transport_node(m);
 
   m.def("version", []() -> std::string {
     return IGNITION_TRANSPORT_VERSION_FULL;

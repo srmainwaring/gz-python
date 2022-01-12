@@ -15,19 +15,26 @@
  *
 */
 
-#ifndef PYTHON_IGNITION_MSGS_HH
-#define PYTHON_IGNITION_MSGS_HH
+#include "ignition/msgs/extras.hh"
 
-#include "ignition/msgs/time.pb.h"
-#include "ignition/msgs/topic_info.pb.h"
-#include "ignition/msgs/wrench.pb.h"
+#include <pybind11/pybind11.h>
 
-ignition::msgs::Time MakeTime();
+#include <pybind11_protobuf/native_proto_caster.h>
 
-void TakeTime(const ignition::msgs::Time& msg);
+namespace py = pybind11;
 
-void TakeTopicInfo(const ignition::msgs::TopicInfo& msg);
+PYBIND11_MODULE(extras, m)
+{
+  using namespace ignition;
+  using namespace msgs;
+  using namespace extras;
 
-void TakeWrench(const ignition::msgs::Wrench& msg);
+  pybind11_protobuf::ImportNativeProtoCasters();
 
-#endif
+  m.doc() = "Ignition Msgs Extras Python Library.";
+
+  m.def("make_time", &MakeTime);
+  m.def("take_time", &TakeTime, pybind11::arg("msg"));
+  m.def("take_topic_info", &TakeTopicInfo, pybind11::arg("msg"));
+  m.def("take_wrench", &TakeWrench, pybind11::arg("msg"));
+}

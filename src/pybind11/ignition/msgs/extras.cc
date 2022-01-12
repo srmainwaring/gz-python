@@ -15,27 +15,36 @@
  *
 */
 
-#include "ignition_msgs.hh"
+#include "ignition/msgs/extras.hh"
 
-ignition::msgs::Time MakeTime()
+namespace ignition
 {
-  ignition::msgs::Time msg;
-  msg.set_sec(10);
-  msg.set_nsec(20);
-  return msg;
-}
+  namespace msgs
+  {
+    namespace extras
+    {
+      Time MakeTime()
+      {
+        Time msg;
+        msg.set_sec(10);
+        msg.set_nsec(20);
+        return msg;
+      }
 
-void TakeTime(const ignition::msgs::Time& msg)
-{
-  std::cout << msg.DebugString();
-}
+      void TakeTime(const Time& msg)
+      {
+        std::cout << msg.DebugString();
+      }
 
-void TakeTopicInfo(const ignition::msgs::TopicInfo& msg)
-{
-  std::cout << msg.DebugString();
-}
+      void TakeTopicInfo(const TopicInfo& msg)
+      {
+        std::cout << msg.DebugString();
+      }
 
-void TakeWrench(const ignition::msgs::Wrench& msg)
-{
-  std::cout << msg.DebugString();
+      void TakeWrench(const Wrench& msg)
+      {
+        std::cout << msg.DebugString();
+      }
+    }
+  }
 }

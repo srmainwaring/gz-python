@@ -35,9 +35,8 @@ from ignition.msgs.twist_pb2 import Twist
 from ignition.msgs.vector3d_pb2 import Vector3d
 from ignition.msgs.wrench_pb2 import Wrench
 
-from ignition_transport import AdvertiseMessageOptions
-from ignition_transport import Node
-from ignition_transport import Publisher
+from ignition.transport import AdvertiseMessageOptions
+from ignition.transport import Node
 
 def main():
     # Create a transport node and advertise options
