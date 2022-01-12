@@ -378,14 +378,14 @@ wget https://raw.githubusercontent.com/srmainwaring/ign-bazel/bazel-macos/exampl
 vcs import . < bazel.repos
 ```
 
-Next, symlink the following files into the workspace directory for `bazel`:
+Next, symlink the following files into the workspace directory:
 
 ```bash
 cd ~/ignition
 ln -sf ./ign_bazel/example/WORKSPACE.example ./WORKSPACE
 ln -sf ./ign_bazel/example/BUILD.example ./BUILD.bazel
 ln -sf ./ign_bazel/example/bazelrc.example ./.bazelrc
-ln -sf ./ign_bazel/example/ign-msgs9.BUILD.example ./ign-msgs9.BUILD
+ln -sf ./python_ignition/ign-msgs9.BUILD ./ign-msgs9.BUILD
 ```
 
 Finally, [`pybind11_protobuf`](https://github.com/pybind/pybind11_protobuf) requires a patch to the protobuf archive which must be available in the subdirectory `~/ignition/external`. It must be copied rather than symlinked:
