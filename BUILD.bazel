@@ -1,7 +1,27 @@
-#———————————————————————————————————————————————————————————————————————
-# python_ignition using Bazel builds
+package(default_visibility = ["//visibility:public"])
 
-load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
+#———————————————————————————————————————————————————————————————————————
+# ignition_py
+# 
+# This is a Python library meta-target to hoist the pybind11 modules
+# under src/pybind11 to the root directory so that
+# 
+#   imports = ["src/pybind11"]
+# 
+# can be used. It ensures that the 'ignition' package is visible on
+# the PYTHONPATH and can be imported into modules without being prefixed
+# by the fullpackage path 'python_ignition.src.pybind11'
+# 
+py_library(
+  name = "ignition_py",
+  imports = [
+    "src/pybind11",
+  ],
+  data = [
+    "//python_ignition/src/pybind11/ignition/msgs:extras.so",
+    "//python_ignition/src/pybind11/ignition:transport.so",
+  ],
+)
 
 #———————————————————————————————————————————————————————————————————————
 # deps_check
@@ -27,7 +47,6 @@ cc_binary(
     # "@gl",
     # "@X//:Xaw",
   ],
-  visibility = ["//visibility:public"],
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -42,7 +61,6 @@ cc_binary(
     "//ign_msgs:ign_msgs",
     "@com_google_protobuf//:protobuf",
   ],
-  visibility = ["//visibility:public"],
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -58,7 +76,6 @@ cc_binary(
     "//ign_transport:ign_transport",
     "@com_google_protobuf//:protobuf",
   ],
-  visibility = ["//visibility:public"],
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -74,7 +91,6 @@ cc_binary(
     "//ign_transport:ign_transport",
     "@com_google_protobuf//:protobuf",
   ],
-  visibility = ["//visibility:public"],
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -91,7 +107,6 @@ cc_binary(
     "//ign_transport:ign_transport",
     "@com_google_protobuf//:protobuf",
   ],
-  visibility = ["//visibility:public"],
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -108,23 +123,8 @@ cc_binary(
     "//ign_transport:ign_transport",
     "@com_google_protobuf//:protobuf",
   ],
-  visibility = ["//visibility:public"],
 )
 
-#———————————————————————————————————————————————————————————————————————
-# C++ library to expose via pybind11
-cc_library(
-  name = "ignition_msgs_lib",
-  srcs = ["src/ignition_msgs.cc"],
-  hdrs = ["include/ignition_msgs.hh"],
-  includes = ["include"],
-  deps = [
-    "@ign-msgs9//:time_cc_proto",
-    "@ign-msgs9//:topic_info_cc_proto",
-    "@ign-msgs9//:wrench_cc_proto",
-  ],
-  visibility = ["//visibility:public"],
-)
 
 #———————————————————————————————————————————————————————————————————————
 # C++ example
@@ -133,9 +133,8 @@ cc_binary(
   srcs = ["src/main.cc"],
   includes = ["include"],
   deps = [
-    ":ignition_msgs_lib",
+    "//python_ignition/src/pybind11/ignition/msgs:ignition_msgs_extras_lib",
   ],
-  visibility = ["//visibility:public"],
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -149,36 +148,4 @@ cc_binary(
     "//ign_transport:ign_transport",
     "@com_google_protobuf//:protobuf",
   ],
-  visibility = ["//visibility:public"],
 )
-
-#———————————————————————————————————————————————————————————————————————
-# Python extension module example
-pybind_extension(
-  name = "ignition_msgs",
-  srcs = ["src/pybind11/ignition_msgs.cc"],
-  includes = ["include"],
-  deps = [
-    ":ignition_msgs_lib",
-    "@pybind11_protobuf//pybind11_protobuf:native_proto_caster",
-    "@com_google_protobuf//:protobuf",
-  ],
-  visibility = ["//visibility:public"],
-)
-
-#———————————————————————————————————————————————————————————————————————
-# ignition_transport
-# 
-# Python bindings for ignition transport
-
-pybind_extension(
-  name = "ignition_transport",
-  srcs = ["src/pybind11/ignition_transport.cc"],
-  deps = [
-    "//ign_transport:ign_transport",
-    "@pybind11_protobuf//pybind11_protobuf:native_proto_caster",
-    "@com_google_protobuf//:protobuf",
-  ],
-  visibility = ["//visibility:public"],
-)
-

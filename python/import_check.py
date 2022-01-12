@@ -14,11 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import sys
 import time
 
 from ignition.msgs.any_pb2 import Any
 from ignition.msgs.header_pb2 import Header
 from ignition.msgs.stringmsg_pb2 import StringMsg
+from ignition.msgs.time_pb2 import Time
 
 from ignition.msgs.extras import make_time
 from ignition.msgs.extras import take_time
@@ -30,6 +32,9 @@ from ignition.transport import Node
 
 
 def main():
+    # for item in sys.path:
+    #   print(item)
+
     # msgs
     msg = Any()
     msg = Header()
