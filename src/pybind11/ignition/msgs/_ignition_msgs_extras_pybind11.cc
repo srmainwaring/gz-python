@@ -19,7 +19,7 @@
 
 #include <pybind11/pybind11.h>
 
-#include <pybind11_protobuf/native_proto_caster.h>
+#include "pybind11_protobuf/native_proto_caster.h"
 
 namespace py = pybind11;
 
