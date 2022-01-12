@@ -23,6 +23,8 @@
 load("@rules_proto_grpc//cpp:defs.bzl", "cpp_proto_library")
 load("@rules_proto_grpc//python:defs.bzl", "python_proto_library")
 
+package(default_visibility = ["//visibility:public"])
+
 #———————————————————————————————————————————————————————————————————————
 # proto_files
 
@@ -66,7 +68,6 @@ proto_library(
     ":vector3d_proto",
   ],
   strip_import_prefix = "proto",
-  visibility = ["//visibility:public"],
 )
 
 cpp_proto_library(
@@ -80,7 +81,6 @@ cpp_proto_library(
     ":time_cc_proto",
     ":vector3d_cc_proto",
   ],
-  visibility = ["//visibility:public"],
 )
 
 python_proto_library(
@@ -95,7 +95,6 @@ python_proto_library(
     ":vector3d_py_pb2",
   ],
   output_mode = "NO_PREFIX",
-  visibility = ["//visibility:public"],
 )
 
 
@@ -108,7 +107,6 @@ proto_library(
     ":header_proto",
   ],
   strip_import_prefix = "proto",
-  visibility = ["//visibility:public"],
 )
 
 cpp_proto_library(
@@ -117,7 +115,6 @@ cpp_proto_library(
   deps = [
     ":header_cc_proto",
   ],
-  visibility = ["//visibility:public"],
 )
 
 python_proto_library(
@@ -127,7 +124,6 @@ python_proto_library(
     ":header_py_pb2",
   ],
   output_mode = "NO_PREFIX",
-  visibility = ["//visibility:public"],
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -139,7 +135,6 @@ proto_library(
     ":header_proto",
   ],
   strip_import_prefix = "proto",
-  visibility = ["//visibility:public"],
 )
 
 cpp_proto_library(
@@ -148,7 +143,6 @@ cpp_proto_library(
   deps = [
     ":header_cc_proto",
   ],
-  visibility = ["//visibility:public"],
 )
 
 python_proto_library(
@@ -158,7 +152,6 @@ python_proto_library(
     ":header_py_pb2",
   ],
   output_mode = "NO_PREFIX",
-  visibility = ["//visibility:public"],
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -170,7 +163,6 @@ proto_library(
     ":header_proto",
   ],
   strip_import_prefix = "proto",
-  visibility = ["//visibility:public"],
 )
 
 cpp_proto_library(
@@ -179,7 +171,6 @@ cpp_proto_library(
   deps = [
     ":header_cc_proto",
   ],
-  visibility = ["//visibility:public"],
 )
 
 python_proto_library(
@@ -189,7 +180,6 @@ python_proto_library(
     ":header_py_pb2",
   ],
   output_mode = "NO_PREFIX",
-  visibility = ["//visibility:public"],
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -202,7 +192,6 @@ proto_library(
     ":header_proto",
   ],
   strip_import_prefix = "proto",
-  visibility = ["//visibility:public"],
 )
 
 cpp_proto_library(
@@ -212,7 +201,6 @@ cpp_proto_library(
     ":double_cc_proto",
     ":header_cc_proto",
   ],
-  visibility = ["//visibility:public"],
 )
 
 python_proto_library(
@@ -225,7 +213,6 @@ python_proto_library(
     ":header_py_pb2",
   ],
   output_mode = "NO_PREFIX",
-  visibility = ["//visibility:public"],
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -237,7 +224,6 @@ proto_library(
     ":header_proto",
   ],
   strip_import_prefix = "proto",
-  visibility = ["//visibility:public"],
 )
 
 cpp_proto_library(
@@ -246,7 +232,6 @@ cpp_proto_library(
   deps = [
     ":header_cc_proto",
   ],
-  visibility = ["//visibility:public"],
 )
 
 python_proto_library(
@@ -256,7 +241,6 @@ python_proto_library(
     ":header_py_pb2",
   ],
   output_mode = "NO_PREFIX",
-  visibility = ["//visibility:public"],
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -269,7 +253,6 @@ proto_library(
     ":header_proto",
   ],
   strip_import_prefix = "proto",
-  visibility = ["//visibility:public"],
 )
 
 cpp_proto_library(
@@ -279,7 +262,6 @@ cpp_proto_library(
     ":float_cc_proto",
     ":header_cc_proto",
   ],
-  visibility = ["//visibility:public"],
 )
 
 python_proto_library(
@@ -290,7 +272,6 @@ python_proto_library(
     ":header_py_pb2",
   ],
   output_mode = "NO_PREFIX",
-  visibility = ["//visibility:public"],
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -300,7 +281,6 @@ proto_library(
   srcs = ["proto/ignition/msgs/header.proto"],
   deps = [":time_proto"],
   strip_import_prefix = "proto",
-  visibility = ["//visibility:public"],
 )
 
 cpp_proto_library(
@@ -309,7 +289,6 @@ cpp_proto_library(
   deps = [
     ":time_cc_proto",
   ],
-  visibility = ["//visibility:public"],
 )
 
 python_proto_library(
@@ -319,7 +298,6 @@ python_proto_library(
     ":time_py_pb2",
   ],
   output_mode = "NO_PREFIX",
-  visibility = ["//visibility:public"],
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -332,7 +310,6 @@ proto_library(
     ":header_proto",
   ],
   strip_import_prefix = "proto",
-  visibility = ["//visibility:public"],
 )
 
 cpp_proto_library(
@@ -342,7 +319,6 @@ cpp_proto_library(
     ":any_cc_proto",
     ":header_cc_proto",
   ],
-  visibility = ["//visibility:public"],
 )
 
 python_proto_library(
@@ -353,7 +329,6 @@ python_proto_library(
     ":header_py_pb2",
   ],
   output_mode = "NO_PREFIX",
-  visibility = ["//visibility:public"],
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -366,7 +341,6 @@ proto_library(
     ":header_proto",
   ],
   strip_import_prefix = "proto",
-  visibility = ["//visibility:public"],
 )
 
 cpp_proto_library(
@@ -376,7 +350,6 @@ cpp_proto_library(
     ":double_cc_proto",
     ":header_cc_proto",
   ],
-  visibility = ["//visibility:public"],
 )
 
 python_proto_library(
@@ -387,7 +360,6 @@ python_proto_library(
     ":header_py_pb2",
   ],
   output_mode = "NO_PREFIX",
-  visibility = ["//visibility:public"],
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -401,7 +373,6 @@ proto_library(
     ":vector3d_proto",
   ],
   strip_import_prefix = "proto",
-  visibility = ["//visibility:public"],
 )
 
 cpp_proto_library(
@@ -412,7 +383,6 @@ cpp_proto_library(
     ":quaternion_cc_proto",
     ":vector3d_cc_proto",
   ],
-  visibility = ["//visibility:public"],
 )
 
 python_proto_library(
@@ -424,7 +394,6 @@ python_proto_library(
     ":vector3d_py_pb2",
   ],
   output_mode = "NO_PREFIX",
-  visibility = ["//visibility:public"],
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -437,7 +406,6 @@ proto_library(
     ":pose_proto",
   ],
   strip_import_prefix = "proto",
-  visibility = ["//visibility:public"],
 )
 
 cpp_proto_library(
@@ -447,7 +415,6 @@ cpp_proto_library(
     ":header_cc_proto",
     ":pose_cc_proto",
   ],
-  visibility = ["//visibility:public"],
 )
 
 python_proto_library(
@@ -458,7 +425,6 @@ python_proto_library(
     ":pose_py_pb2",
   ],
   output_mode = "NO_PREFIX",
-  visibility = ["//visibility:public"],
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -470,7 +436,6 @@ proto_library(
     ":header_proto",
   ],
   strip_import_prefix = "proto",
-  visibility = ["//visibility:public"],
 )
 
 cpp_proto_library(
@@ -479,7 +444,6 @@ cpp_proto_library(
   deps = [
     ":header_cc_proto",
   ],
-  visibility = ["//visibility:public"],
 )
 
 python_proto_library(
@@ -489,7 +453,6 @@ python_proto_library(
     ":header_py_pb2",
   ],
   output_mode = "NO_PREFIX",
-  visibility = ["//visibility:public"],
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -502,7 +465,6 @@ proto_library(
     ":publish_proto",
   ],
   strip_import_prefix = "proto",
-  visibility = ["//visibility:public"],
 )
 
 cpp_proto_library(
@@ -512,7 +474,6 @@ cpp_proto_library(
     ":header_cc_proto",
     ":publish_cc_proto",
   ],
-  visibility = ["//visibility:public"],
 )
 
 python_proto_library(
@@ -523,7 +484,6 @@ python_proto_library(
     ":publish_py_pb2",
   ],
   output_mode = "NO_PREFIX",
-  visibility = ["//visibility:public"],
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -535,7 +495,6 @@ proto_library(
     ":header_proto",
   ],
   strip_import_prefix = "proto",
-  visibility = ["//visibility:public"],
 )
 
 cpp_proto_library(
@@ -544,7 +503,6 @@ cpp_proto_library(
   deps = [
     ":header_cc_proto",
   ],
-  visibility = ["//visibility:public"],
 )
 
 python_proto_library(
@@ -554,7 +512,6 @@ python_proto_library(
     ":header_py_pb2",
   ],
   output_mode = "NO_PREFIX",
-  visibility = ["//visibility:public"],
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -566,7 +523,6 @@ proto_library(
     ":header_proto",
   ],
   strip_import_prefix = "proto",
-  visibility = ["//visibility:public"],
 )
 
 cpp_proto_library(
@@ -575,7 +531,6 @@ cpp_proto_library(
   deps = [
     ":header_cc_proto",
   ],
-  visibility = ["//visibility:public"],
 )
 
 python_proto_library(
@@ -585,7 +540,6 @@ python_proto_library(
     ":header_py_pb2",
   ],
   output_mode = "NO_PREFIX",
-  visibility = ["//visibility:public"],
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -597,7 +551,6 @@ proto_library(
     ":header_proto"
   ],
   strip_import_prefix = "proto",
-  visibility = ["//visibility:public"],
 )
 
 cpp_proto_library(
@@ -606,7 +559,6 @@ cpp_proto_library(
   deps = [
     ":header_cc_proto"
   ],
-  visibility = ["//visibility:public"],
 )
 
 python_proto_library(
@@ -616,7 +568,6 @@ python_proto_library(
     ":header_py_pb2",
   ],
   output_mode = "NO_PREFIX",
-  visibility = ["//visibility:public"],
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -625,20 +576,17 @@ proto_library(
   name = "time_proto",
   srcs = ["proto/ignition/msgs/time.proto"],
   strip_import_prefix = "proto",
-  visibility = ["//visibility:public"],
 )
 
 cpp_proto_library(
   name = "time_cc_proto",
   protos = [":time_proto"],
-  visibility = ["//visibility:public"],
 )
 
 python_proto_library(
   name = "time_py_pb2",
   protos = [":time_proto"],
   output_mode = "NO_PREFIX",
-  visibility = ["//visibility:public"],
  )
 
 #———————————————————————————————————————————————————————————————————————
@@ -652,7 +600,6 @@ proto_library(
     ":subscribe_proto",
   ],
   strip_import_prefix = "proto",
-  visibility = ["//visibility:public"],
 )
 
 cpp_proto_library(
@@ -663,7 +610,6 @@ cpp_proto_library(
     ":publish_cc_proto",
     ":subscribe_cc_proto",
   ],
-  visibility = ["//visibility:public"],
 )
 
 python_proto_library(
@@ -675,7 +621,6 @@ python_proto_library(
     ":subscribe_py_pb2",
   ],
   output_mode = "NO_PREFIX",
-  visibility = ["//visibility:public"],
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -688,7 +633,6 @@ proto_library(
     ":vector3d_proto",
   ],
   strip_import_prefix = "proto",
-  visibility = ["//visibility:public"],
 )
 
 cpp_proto_library(
@@ -698,7 +642,6 @@ cpp_proto_library(
     ":header_cc_proto",
     ":vector3d_cc_proto",
   ],
-  visibility = ["//visibility:public"],
 )
 
 python_proto_library(
@@ -709,7 +652,6 @@ python_proto_library(
     ":vector3d_py_pb2",
   ],
   output_mode = "NO_PREFIX",
-  visibility = ["//visibility:public"],
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -721,7 +663,6 @@ proto_library(
     ":header_proto",
   ],
   strip_import_prefix = "proto",
-  visibility = ["//visibility:public"],
 )
 
 cpp_proto_library(
@@ -730,7 +671,6 @@ cpp_proto_library(
   deps = [
     ":header_cc_proto",
   ],
-  visibility = ["//visibility:public"],
 )
 
 python_proto_library(
@@ -740,7 +680,6 @@ python_proto_library(
     ":header_py_pb2",
   ],
   output_mode = "NO_PREFIX",
-  visibility = ["//visibility:public"],
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -753,7 +692,6 @@ proto_library(
     ":vector3d_proto",
   ],
   strip_import_prefix = "proto",
-  visibility = ["//visibility:public"],
 )
 
 cpp_proto_library(
@@ -763,7 +701,6 @@ cpp_proto_library(
     ":header_cc_proto",
     ":vector3d_cc_proto",
   ],
-  visibility = ["//visibility:public"],
 )
 
 python_proto_library(
@@ -774,5 +711,4 @@ python_proto_library(
     ":vector3d_py_pb2",
   ],
   output_mode = "NO_PREFIX",
-  visibility = ["//visibility:public"],
 )
