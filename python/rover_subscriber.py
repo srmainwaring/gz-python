@@ -22,8 +22,8 @@ from ignition.msgs.quaternion_pb2 import Quaternion
 from ignition.msgs.twist_pb2 import Twist
 from ignition.msgs.vector3d_pb2 import Vector3d
 
-from ignition_transport import Node
-from ignition_transport import SubscribeOptions
+from ignition.transport import Node
+from ignition.transport import SubscribeOptions
 
 
 def pose_cb(msg: Pose) -> None:

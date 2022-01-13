@@ -22,7 +22,7 @@ $ ign topic -i -t /topic
 
 import argparse
 
-from ignition_transport import Node
+from ignition.transport import Node
 
 def main():
     # process command line

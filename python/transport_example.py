@@ -22,10 +22,9 @@ from ignition.msgs.twist_pb2 import Twist
 from ignition.msgs.vector3d_pb2 import Vector3d
 from ignition.msgs.wrench_pb2 import Wrench
 
-from ignition_transport import AdvertiseMessageOptions
-from ignition_transport import SubscribeOptions
-from ignition_transport import Node
-from ignition_transport import Publisher
+from ignition.transport import AdvertiseMessageOptions
+from ignition.transport import SubscribeOptions
+from ignition.transport import Node
 
 from google.protobuf.internal import api_implementation
 
@@ -42,7 +41,7 @@ def main():
 
     #----------------------------------------------
     # get a publisher and check valid
-    pub = Publisher()
+    pub = Node.Publisher()
     print("publisher valid: {}".format(pub.valid()))
 
     # create and publish different message types

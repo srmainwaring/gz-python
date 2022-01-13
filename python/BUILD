@@ -1,11 +1,33 @@
 #———————————————————————————————————————————————————————————————————————
 # Python examples
+# 
+# 
+# Notes:
+# 
+# In py_binary the flag:
+# 
+#   legacy_create_init = False
+# 
+# Because there are two `ignition` packages. One coming from @ign-msgs9
+# that contains the generated protbuf Python bindings, and the other
+# from the pybind11 extension modules. The default behaviour is for Bazel
+# to generate empty __init__.py files in all subdirectories under the
+# <py_binary.name>.runfiles directory in bazel-bin. In that case only the
+# first occurrence of `ignition` on the sys.path will be loaded and an
+# attempt to import the other package results in module not found errors.
+#
+# See the function documentation for `py_binary`: 
+# Bazel Python Rules: https://docs.bazel.build/versions/main/be/python.html
+# 
+# 
 #———————————————————————————————————————————————————————————————————————
 
+package(default_visibility = ["//visibility:public"])
+
 #———————————————————————————————————————————————————————————————————————
-# ign_msg_py_deps: list of all the generated Python protobuf libraries
+# ign_msgs_py_deps: list of all the generated Python protobuf libraries
 # 
-ign_msg_py_deps = [
+ign_msgs_py_deps = [
   "@ign-msgs9//:any_py_pb2",
   "@ign-msgs9//:color_py_pb2",
   "@ign-msgs9//:cmd_vel2d_py_pb2",
@@ -31,16 +53,23 @@ ign_msg_py_deps = [
 ]
 
 #———————————————————————————————————————————————————————————————————————
+# import_check
+# 
+py_binary(
+  name = "import_check",
+  srcs = ["import_check.py"],
+  deps = ign_msgs_py_deps + ["//python_ignition:ignition_py"],
+  legacy_create_init = False,
+)
+
+#———————————————————————————————————————————————————————————————————————
 # msgs_example
 # 
 py_binary(
   name = "msgs_example",
   srcs = ["msgs_example.py"],
-  data = [
-    "@com_google_protobuf//:proto_api",
-  ],
-  deps = ign_msg_py_deps,
-  visibility = ["//visibility:public"],
+  deps = ign_msgs_py_deps,
+  legacy_create_init = False,
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -49,12 +78,8 @@ py_binary(
 py_binary(
   name = "transport_example",
   srcs = ["transport_example.py"],
-  data = [
-    "//python_ignition:ignition_transport.so",
-    "@com_google_protobuf//:proto_api",
-  ],
-  deps = ign_msg_py_deps,
-  visibility = ["//visibility:public"],
+  deps = ign_msgs_py_deps + ["//python_ignition:ignition_py"],
+  legacy_create_init = False,
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -65,12 +90,8 @@ py_binary(
 py_binary(
   name = "publisher",
   srcs = ["publisher.py"],
-  data = [
-    "//python_ignition:ignition_transport.so",
-    "@com_google_protobuf//:proto_api",
-  ],
-  deps = ign_msg_py_deps,
-  visibility = ["//visibility:public"],
+  deps = ign_msgs_py_deps + ["//python_ignition:ignition_py"],
+  legacy_create_init = False,
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -81,12 +102,8 @@ py_binary(
 py_binary(
   name = "subscriber",
   srcs = ["subscriber.py"],
-  data = [
-    "//python_ignition:ignition_transport.so",
-    "@com_google_protobuf//:proto_api",
-  ],
-  deps = ign_msg_py_deps,
-  visibility = ["//visibility:public"],
+  deps = ign_msgs_py_deps + ["//python_ignition:ignition_py"],
+  legacy_create_init = False,
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -99,11 +116,10 @@ py_binary(
   name = "rover_publisher",
   srcs = ["rover_publisher.py"],
   data = [
-    "//python_ignition:ignition_transport.so",
     "@com_google_protobuf//:proto_api",
   ],
-  deps = ign_msg_py_deps,
-  visibility = ["//visibility:public"],
+  deps = ign_msgs_py_deps + ["//python_ignition:ignition_py"],
+  legacy_create_init = False,
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -115,12 +131,8 @@ py_binary(
 py_binary(
   name = "rover_subscriber",
   srcs = ["rover_subscriber.py"],
-  data = [
-    "//python_ignition:ignition_transport.so",
-    "@com_google_protobuf//:proto_api",
-  ],
-  deps = ign_msg_py_deps,
-  visibility = ["//visibility:public"],
+  deps = ign_msgs_py_deps + ["//python_ignition:ignition_py"],
+  legacy_create_init = False,
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -129,12 +141,8 @@ py_binary(
 py_binary(
   name = "pub_all_msg_types",
   srcs = ["pub_all_msg_types.py"],
-  data = [
-    "//python_ignition:ignition_transport.so",
-    "@com_google_protobuf//:proto_api",
-  ],
-  deps = ign_msg_py_deps,
-  visibility = ["//visibility:public"],
+  deps = ign_msgs_py_deps + ["//python_ignition:ignition_py"],
+  legacy_create_init = False,
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -145,12 +153,8 @@ py_binary(
 py_binary(
   name = "ign_topic_list",
   srcs = ["ign_topic_list.py"],
-  data = [
-    "//python_ignition:ignition_transport.so",
-    "@com_google_protobuf//:proto_api",
-  ],
-  deps = ign_msg_py_deps,
-  visibility = ["//visibility:public"],
+  deps = ign_msgs_py_deps + ["//python_ignition:ignition_py"],
+  legacy_create_init = False,
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -161,12 +165,8 @@ py_binary(
 py_binary(
   name = "ign_topic_info",
   srcs = ["ign_topic_info.py"],
-  data = [
-    "//python_ignition:ignition_transport.so",
-    "@com_google_protobuf//:proto_api",
-  ],
-  deps = ign_msg_py_deps,
-  visibility = ["//visibility:public"],
+  deps = ign_msgs_py_deps + ["//python_ignition:ignition_py"],
+  legacy_create_init = False,
 )
 
 #———————————————————————————————————————————————————————————————————————
@@ -177,11 +177,7 @@ py_binary(
 py_binary(
   name = "ign_topic_echo",
   srcs = ["ign_topic_echo.py"],
-  data = [
-    "//python_ignition:ignition_transport.so",
-    "@com_google_protobuf//:proto_api",
-  ],
-  deps = ign_msg_py_deps,
-  visibility = ["//visibility:public"],
+  deps = ign_msgs_py_deps + ["//python_ignition:ignition_py"],
+  legacy_create_init = False,
 )
 

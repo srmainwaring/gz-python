@@ -42,7 +42,7 @@ generated Python protobuf bindings.
 
 ```bash
 cd ~/workspace/src/python-ignition
-export PYTHONPATH=${PYTHONPATH}:$(pwd)/build::$(pwd)/build/python
+export PYTHONPATH=${PYTHONPATH}:$(pwd)/build/python
 ```
 
 ## Usage
@@ -64,7 +64,7 @@ print(msg)
 
 ### `ign-transport` bindings 
 
-The Python bindings for `ign-transport` are contained in a module called `ign_transport`.
+The Python bindings for `ign-transport` are contained in a module called `transport`.
 The object naming and usage for the most part follows the C++ interface,
 so the C++ Ignition Tutorials are a good guide on how to use the library.
 
@@ -73,9 +73,8 @@ Publish:
 ```python
 from ignition.msgs.stringmsg_pb2 import StringMsg
 
-from ignition_transport import AdvertiseMessageOptions
-from ignition_transport import Node
-from ignition_transport import Publisher
+from ignition.transport import AdvertiseMessageOptions
+from ignition.transport import Node
 
 # Create a transport node
 node = Node()
@@ -100,8 +99,8 @@ import typing
 
 from ignition.msgs.stringmsg_pb2 import StringMsg
 
-from ignition_transport import SubscribeOptions
-from ignition_transport import Node
+from ignition.transport import SubscribeOptions
+from ignition.transport import Node
 
 def cb(msg: StringMsg) -> None:
     print("Msg: [{}] from Python".format(msg.data))
@@ -379,14 +378,14 @@ wget https://raw.githubusercontent.com/srmainwaring/ign-bazel/bazel-macos/exampl
 vcs import . < bazel.repos
 ```
 
-Next, symlink the following files into the workspace directory for `bazel`:
+Next, symlink the following files into the workspace directory:
 
 ```bash
 cd ~/ignition
 ln -sf ./ign_bazel/example/WORKSPACE.example ./WORKSPACE
 ln -sf ./ign_bazel/example/BUILD.example ./BUILD.bazel
 ln -sf ./ign_bazel/example/bazelrc.example ./.bazelrc
-ln -sf ./ign_bazel/example/ign-msgs9.BUILD.example ./ign-msgs9.BUILD
+ln -sf ./python_ignition/ign-msgs9.BUILD ./ign-msgs9.BUILD
 ```
 
 Finally, [`pybind11_protobuf`](https://github.com/pybind/pybind11_protobuf) requires a patch to the protobuf archive which must be available in the subdirectory `~/ignition/external`. It must be copied rather than symlinked:

@@ -14,40 +14,40 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import sys
 import time
 
+from ignition.msgs.any_pb2 import Any
+from ignition.msgs.header_pb2 import Header
 from ignition.msgs.stringmsg_pb2 import StringMsg
+from ignition.msgs.time_pb2 import Time
+
+from ignition.msgs.extras import make_time
+from ignition.msgs.extras import take_time
+from ignition.msgs.extras import take_topic_info
+from ignition.msgs.extras import take_wrench
 
 from ignition.transport import AdvertiseMessageOptions
 from ignition.transport import Node
 
+
 def main():
-    # Create a transport node and advertise a topic
-    node = Node()
-    topic = "/foo"
-    msg_type_name = StringMsg.DESCRIPTOR.full_name
-    pub_options = AdvertiseMessageOptions()
-    pub = node.advertise(topic, msg_type_name, pub_options)
-    if pub.valid():
-        print("Advertising {} on topic [{}]".format(msg_type_name, topic))
-    else:
-        print("Error advertising topic [{}]".format(topic))
+    # for item in sys.path:
+    #   print(item)
 
-    # Prepare the message
+    # msgs
+    msg = Any()
+    msg = Header()
     msg = StringMsg()
-    msg.data = "hello"
 
-    try:
-        while True:
-          if not pub.publish(msg):
-              break
+    # msgs functions
+    msg = make_time()
 
-          print("Publishing hello on topic [{}]".format(topic))
-          time.sleep(1.0)
+    # transport types
+    opts = AdvertiseMessageOptions()
+    node = Node()
+    pub = Node.Publisher()
 
-    except KeyboardInterrupt:
-        pass
 
 if __name__ == "__main__":
     main()
-

@@ -18,16 +18,26 @@
 #ifndef PYTHON_IGNITION_MSGS_HH
 #define PYTHON_IGNITION_MSGS_HH
 
-#include "ignition/msgs/time.pb.h"
-#include "ignition/msgs/topic_info.pb.h"
-#include "ignition/msgs/wrench.pb.h"
+#include <ignition/msgs/time.pb.h>
+#include <ignition/msgs/topic_info.pb.h>
+#include <ignition/msgs/wrench.pb.h>
 
-ignition::msgs::Time MakeTime();
+namespace ignition
+{
+  namespace msgs
+  {
+    namespace extras
+    {
 
-void TakeTime(const ignition::msgs::Time& msg);
+      Time MakeTime();
 
-void TakeTopicInfo(const ignition::msgs::TopicInfo& msg);
+      void TakeTime(const Time& msg);
 
-void TakeWrench(const ignition::msgs::Wrench& msg);
+      void TakeTopicInfo(const TopicInfo& msg);
+
+      void TakeWrench(const Wrench& msg);
+    }
+  }
+}
 
 #endif

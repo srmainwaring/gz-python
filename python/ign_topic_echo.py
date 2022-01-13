@@ -23,8 +23,8 @@ $ ign topic -i -e /topic
 import argparse
 import time
 
-from ignition_transport import SubscribeOptions
-from ignition_transport import Node
+from ignition.transport import SubscribeOptions
+from ignition.transport import Node
 
 # callback - prints the raw message
 def cb(msg):

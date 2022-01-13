@@ -36,53 +36,61 @@ find_package(ignition-transport${IGN_TRANSPORT_VER} REQUIRED)
 add_subdirectory(external)
 
 #============================================================================
-# ignition_msgs_lib C++ library
+# ignition_msgs_extras_lib C++ library
 
-add_library(ignition_msgs_lib SHARED
-  src/ignition_msgs.cc
+add_library(ignition_msgs_extras_lib SHARED
+  src/pybind11/ignition/msgs/extras.cc
 )
 
-target_link_libraries(ignition_msgs_lib
+target_link_libraries(ignition_msgs_extras_lib
   ignition-msgs${IGN_MSGS_VER}::ignition-msgs${IGN_MSGS_VER}
 )
 
-target_include_directories(ignition_msgs_lib
+target_include_directories(ignition_msgs_extras_lib
   PRIVATE
     ${PROJECT_SOURCE_DIR}/include
 )
 
 #============================================================================
-# ignition_msgs Python extension module
+# msgs extras Python extension module
 
-pybind11_add_module(ignition_msgs MODULE
-  src/pybind11/ignition_msgs.cc
+pybind11_add_module(extras MODULE
+  src/pybind11/ignition/msgs/_ignition_msgs_extras_pybind11.cc
 )
 
-target_link_libraries(ignition_msgs
+target_link_libraries(extras
   PRIVATE
-    ignition_msgs_lib
+    ignition_msgs_extras_lib
+    ignition-msgs${IGN_MSGS_VER}::ignition-msgs${IGN_MSGS_VER}
     ${Protobuf_LIBRARY}
     pybind11_native_proto_caster
 )
 
-target_include_directories(ignition_msgs
+target_include_directories(extras
   PRIVATE
     ${PROJECT_SOURCE_DIR}/include
     ${PROJECT_SOURCE_DIR}/external/pybind11_protobuf
 )
 
-add_dependencies(ignition_msgs
-  ignition_msgs_lib
+add_dependencies(extras
+  ignition_msgs_extras_lib
+)
+
+set_target_properties(extras
+  PROPERTIES
+  ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/python/ignition/msgs"
+  LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/python/ignition/msgs"
+  RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/python/ignition/msgs"
 )
 
 #============================================================================
-# ignition_transport Python extension module
+# transport Python extension module
 
-pybind11_add_module(ignition_transport MODULE
-  src/pybind11/ignition_transport.cc
+pybind11_add_module(transport MODULE
+  src/pybind11/ignition/transport/_ignition_transport_pybind11.cc
 )
 
-target_link_libraries(ignition_transport
+target_link_libraries(transport
   PRIVATE
     ignition-msgs${IGN_MSGS_VER}::ignition-msgs${IGN_MSGS_VER}
     ignition-transport${IGN_TRANSPORT_VER}::ignition-transport${IGN_TRANSPORT_VER}
@@ -90,10 +98,17 @@ target_link_libraries(ignition_transport
     pybind11_native_proto_caster
 )
 
-target_include_directories(ignition_transport
+target_include_directories(transport
   PRIVATE
     ${Protobuf_INCLUDE_DIR}
     ${PROJECT_SOURCE_DIR}/external/pybind11_protobuf
+)
+
+set_target_properties(transport
+  PROPERTIES
+  ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/python/ignition"
+  LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/python/ignition"
+  RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/python/ignition"
 )
 
 #============================================================================
@@ -102,7 +117,7 @@ target_include_directories(ignition_transport
 add_executable(main src/main.cc)
 
 target_link_libraries(main
-  ignition_msgs_lib
+  ignition_msgs_extras_lib
   ignition-msgs${IGN_MSGS_VER}::ignition-msgs${IGN_MSGS_VER}
 )
 
@@ -112,7 +127,7 @@ target_include_directories(main
 )
 
 add_dependencies(main
-  ignition_msgs_lib
+  ignition_msgs_extras_lib
 )
 
 #============================================================================
