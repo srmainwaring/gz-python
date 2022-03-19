@@ -44,7 +44,21 @@ void define_transport_node(py::module_ module)
 
   pybind11_protobuf::ImportNativeProtoCasters();
 
-  py::class_<AdvertiseMessageOptions>(
+  py::enum_<Scope_t>(module, "Scope_t")
+    .value("PROCESS", Scope_t::PROCESS)
+    .value("HOST", Scope_t::HOST)
+    .value("ALL", Scope_t::ALL)
+    ;
+
+  py::class_<AdvertiseOptions>(
+      module, "AdvertiseOptions")
+      .def(py::init<>())
+      .def_property("scope",
+          &AdvertiseOptions::Scope,
+          &AdvertiseOptions::SetScope)
+      ;
+
+  py::class_<AdvertiseMessageOptions, AdvertiseOptions>(
       module, "AdvertiseMessageOptions")
       .def(py::init<>())
       .def_property_readonly("throttled",
@@ -52,6 +66,11 @@ void define_transport_node(py::module_ module)
       .def_property("msgs_per_sec",
           &AdvertiseMessageOptions::MsgsPerSec,
           &AdvertiseMessageOptions::SetMsgsPerSec)
+      ;
+
+  py::class_<AdvertiseServiceOptions, AdvertiseOptions>(
+      module, "AdvertiseServiceOptions")
+      .def(py::init<>())
       ;
 
   py::class_<SubscribeOptions>(
@@ -116,6 +135,32 @@ void define_transport_node(py::module_ module)
           })
       ;
 
+  py::class_<ServicePublisher, Publisher>(
+      module, "ServicePublisher")
+      .def(py::init<>())
+      .def_property("socket_id",
+          &ServicePublisher::SocketId,
+          &ServicePublisher::SetSocketId)
+      .def_property("req_type_name",
+          &ServicePublisher::ReqTypeName,
+          &ServicePublisher::SetReqTypeName)
+      .def_property("rep_type_name",
+          &ServicePublisher::RepTypeName,
+          &ServicePublisher::SetRepTypeName)
+      // virtual
+      .def_property("options",
+          &ServicePublisher::Options,
+          &ServicePublisher::SetOptions)
+      // virtual
+      .def("discovery", [](
+          ServicePublisher &_pub)
+          {
+            ignition::msgs::Discovery msg;
+            _pub.FillDiscovery(msg);
+            return msg;
+          })
+      ;
+
   auto node = py::class_<Node>(module, "Node")
       .def(py::init<>())
       .def("advertise", static_cast<
@@ -160,6 +205,47 @@ void define_transport_node(py::module_ module)
             return publishers;
           },
           pybind11::arg("topic"))
+      .def("advertised_services", &Node::AdvertisedServices)
+      // send a service request using the blocking interface
+      .def("request", [](
+          Node &_node,
+          const std::string &_service,
+          const google::protobuf::Message &_request,
+          const unsigned int &_timeout,
+          const std::string &_repType)
+          {
+            // see ign-transport/src/cmd/ign.cc L227-240
+            auto rep = ignition::msgs::Factory::New(_repType);
+            if (!rep)
+            {
+              std::cerr << "Unable to create response of type[" << _repType << "].\n";
+              return false;
+            }
+
+            bool result{false};
+            bool executed = _node.Request(_service, _request, _timeout, *rep, result);
+            return (executed && result);
+          },
+          pybind11::arg("service"),
+          pybind11::arg("request"),
+          pybind11::arg("timeout"),
+          pybind11::arg("rep_type_name"))
+      .def("service_list", [](
+          Node &_node)
+          {
+            std::vector<std::string> services;
+            _node.ServiceList(services);
+            return services;
+          })
+      .def("service_info", [](
+          Node &_node,
+          const std::string &_service)
+          {
+            std::vector<ServicePublisher> publishers;
+            _node.ServiceInfo(_service, publishers);
+            return publishers;
+          },
+          pybind11::arg("service"))
       ;
 
   // register Node::Publisher as a subclass of Node
