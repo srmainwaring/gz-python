@@ -336,7 +336,30 @@ data: "hello"
 data: "hello"
 
 data: "hello"
+```
 
+--- 
+
+`python/ign_service_list.py` is a Python version of the command `ign service -l`
+
+```bash
+$ ./python/ign_service_list.py 
+/gazebo/resource_paths/add
+/gazebo/resource_paths/get
+/gazebo/worlds
+/gui/camera/view_control
+/gui/follow
+...
+```
+
+--- 
+
+`python/ign_service_info.py` is a Python version of the command `ign service -i -s /gazebo/worlds`
+
+```bash
+$ ./python/ign_service_info.py -s /gazebo/worlds
+Service providers [Address, Request Message Type, Response Message Type]:
+  tcp://127.0.0.1:63657, ignition.msgs.Empty, ignition.msgs.StringMsg_V
 ```
 
 

@@ -33,7 +33,7 @@ cc_binary(
   deps = [
     "//ign_utils:ign_utils",
     "//ign_math:ign_math",
-    "//ign_math:libignition-math6.so",
+    "//ign_math:libignition-math7.so",
     "@tinyxml2",
     "@sqlite3",
     "@zmq",
