@@ -7,7 +7,7 @@ This project provides Python bindings for [`ignition-msgs`](https://github.com/i
 ### Install Ignition
 
 Follow the installation instructions for [Ignition Garden](https://ignitionrobotics.org/docs/garden).
-This project depends on `ignition-msgs9` and `ignition-transport12`. These may be either available as system installs or in a source install in a local workspace folder which we assume is `~/workspace`.
+This project depends directly on [`ignition-msgs`](https://github.com/ignitionrobotics/ign-msgs) and [`ignition-transport`](https://github.com/ignitionrobotics/ign-transport). These may be either available as system installs or in a source install in a local workspace folder which we assume is `~/workspace`.
 
 ### Install `python-ignition`
 
@@ -24,6 +24,12 @@ Currently our use of [`pybind11_protobuf`](https://github.com/pybind/pybind11_pr
 
 ```bash
 export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
+```
+
+Set the environment variable determing the Ignition version. This should be one of `edifice`, `fortress` or `garden`. The default is `garden`:
+
+```bash
+export IGNITION_VERSION=garden
 ```
 
 Then create a build directory, configure and make:

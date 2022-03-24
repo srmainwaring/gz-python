@@ -22,12 +22,28 @@ find_package(Python COMPONENTS Interpreter Development)
 # find_package(pybind11 CONFIG)
 
 #============================================================================
-# Find the ign-msgs library
-set(IGN_MSGS_VER 9)
-find_package(ignition-msgs${IGN_MSGS_VER} REQUIRED)
+# Find Ignition dependencies
 
-# Find the ign-transport library
+# Default versions to Ignition Garden
+set(IGN_MSGS_VER 9)
 set(IGN_TRANSPORT_VER 12)
+
+if("$ENV{IGNITION_VERSION}" STREQUAL "edifice")
+  # Edifice
+  set(IGN_MSGS_VER 7)
+  set(IGN_TRANSPORT_VER 10)
+  message(STATUS "Compiling against Ignition Edifice")
+elseif("$ENV{IGNITION_VERSION}" STREQUAL "fortress")
+  # Fortress
+  set(IGN_MSGS_VER 8)
+  set(IGN_TRANSPORT_VER 11)
+  message(STATUS "Compiling against Ignition Fortress")
+else() 
+  # Default to Garden
+  message(STATUS "Compiling against Ignition Garden")
+endif()
+
+find_package(ignition-msgs${IGN_MSGS_VER} REQUIRED)
 find_package(ignition-transport${IGN_TRANSPORT_VER} REQUIRED)
 
 #============================================================================
