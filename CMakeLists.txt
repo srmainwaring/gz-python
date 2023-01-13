@@ -22,7 +22,7 @@ find_package(Protobuf REQUIRED)
 # macOS: $ brew install python
 # macOS: $ brew install pybind11
 # 
-find_package(Python COMPONENTS Interpreter Development)
+find_package(Python 3.10 EXACT COMPONENTS Interpreter Development)
 # find_package(pybind11 CONFIG)
 
 #============================================================================
