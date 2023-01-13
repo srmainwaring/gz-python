@@ -15,38 +15,35 @@
 # limitations under the License.
 
 '''
-Replicate the ign_tools command:
+Replicate the gz_tools command:
 
-$ ign service -i -s /service
+$ gz topic -i -t /topic
 '''
 
 import argparse
 
-from ignition.transport import Node
+from gz.transport import Node
 
 def main():
     # process command line
-    parser = argparse.ArgumentParser(description="Get info about a service.")
-    parser.add_argument("-s", "--service",
-        metavar="service", required=True, help="Name of a service")
+    parser = argparse.ArgumentParser(description="Get info about a topic.")
+    parser.add_argument("-t", "--topic",
+        metavar="topic", required=True, help="Name of a topic")
     args = parser.parse_args()
 
-    # service is required
-    service = args.service
+    # topic is required
+    topic = args.topic
 
     # create a transport node
     node = Node()
 
-    # get list of service info
-    service_info_list = node.service_info(service)
+    # get list of topic info
+    topic_info_list = node.topic_info(topic)
 
-    # display address and message types
-    print("Service providers [Address, Request Message Type, Response Message Type]:")
-    for service_info in service_info_list:
-        print("  {}, {}, {}".format(
-            service_info.addr,
-            service_info.req_type_name,
-            service_info.rep_type_name))
+    # display address and message type
+    print("Publishers [Address, Message Type]:")
+    for topic_info in topic_info_list:
+        print("  {}, {}".format(topic_info.addr, topic_info.msg_type_name))
 
 
 if __name__ == "__main__":
