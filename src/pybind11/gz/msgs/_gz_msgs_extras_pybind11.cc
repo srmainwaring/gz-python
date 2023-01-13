@@ -15,7 +15,7 @@
  *
 */
 
-#include "ignition/msgs/extras.hh"
+#include "gz/msgs/extras.hh"
 
 #include <pybind11/pybind11.h>
 
@@ -25,13 +25,13 @@ namespace py = pybind11;
 
 PYBIND11_MODULE(extras, m)
 {
-  using namespace ignition;
+  using namespace gz;
   using namespace msgs;
   using namespace extras;
 
   pybind11_protobuf::ImportNativeProtoCasters();
 
-  m.doc() = "Ignition Msgs Extras Python Library.";
+  m.doc() = "Gazebo Msgs Extras Python Library.";
 
   m.def("make_time", &MakeTime);
   m.def("take_time", &TakeTime, pybind11::arg("msg"));

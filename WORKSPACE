@@ -1,4 +1,4 @@
-workspace(name = "python-ignition")
+workspace(name = "gz-python")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository", "new_git_repository")
@@ -101,21 +101,21 @@ bind(
     actual = "@local_config_python//:python_headers",
 )
 
-# `ign-msgs9`
+# `gz-msgs9`
 # https://stackoverflow.com/questions/50592846/pull-github-repository-using-bazel
-# strip the `proto` prefix so that generated protobuf bindings for ignition-msgs
-# have the correct include path which is `ignition.msgs`
+# strip the `proto` prefix so that generated protobuf bindings for gz-msgs
+# have the correct include path which is `gz.msgs`
 new_git_repository(
-    name = "ign-msgs9",
+    name = "gz-msgs9",
     commit = "6da277056e867e8b60c0b48ff88df9b3c5a49c9a", # Latest (2022-01-01)
-    remote = "https://github.com/ignitionrobotics/ign-msgs.git",
+    remote = "https://github.com/gazebosim/gz-msgs.git",
     strip_prefix = "proto",
-    build_file = "//:ign-msgs9.BUILD"
+    build_file = "//:gz-msgs9.BUILD"
 )
 
-# `ign-transport12`
+# `gz-transport12`
 git_repository(
-    name = "ign-transport12",
+    name = "gz-transport12",
     commit = "185961ff1c97583c50d67c65a5b0c9bb9c64f5d5", # Latest (2022-01-01)
-    remote = "https://github.com/ignitionrobotics/ign-transport.git",
+    remote = "https://github.com/gazebosim/gz-transport.git",
 )

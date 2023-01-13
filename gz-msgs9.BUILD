@@ -1,5 +1,5 @@
 #———————————————————————————————————————————————————————————————————————
-# BUILD file for ign-msgs9
+# BUILD file for gz-msgs9
 #
 # Using https://rules-proto-grpc.com
 #
@@ -11,7 +11,7 @@
 #
 # Notes: python_proto_library
 #  - Use output_mode = "NO_PREFIX" to use only the protobuf
-#    import path ignition.msgs. The default PREFIX will place
+#    import path gz.msgs. The default PREFIX will place
 #    each Python protobuf library under an extra folder with
 #    the target name.
 #
@@ -28,7 +28,7 @@ package(default_visibility = ["//visibility:public"])
 #———————————————————————————————————————————————————————————————————————
 # proto_files
 
-# load("@ign-msgs9//:protobuf.bzl",
+# load("@gz-msgs9//:protobuf.bzl",
 #   "get_include_directory",
 #   "proto_path_to_generated_filename",
 # )
@@ -37,11 +37,11 @@ package(default_visibility = ["//visibility:public"])
 
 # get all .proto files
 # proto_srcs = glob([
-#   "proto/ignition/msgs/*.proto",
+#   "proto/gz/msgs/*.proto",
 # ])
 
 # proto_srcs = [
-#   "proto/ignition/msgs/any.proto",
+#   "proto/gz/msgs/any.proto",
 # ]
 
 # deps = get_include_directory(proto_srcs[0])
@@ -58,7 +58,7 @@ package(default_visibility = ["//visibility:public"])
 # any.proto
 proto_library(
   name = "any_proto",
-  srcs = ["proto/ignition/msgs/any.proto"],
+  srcs = ["proto/gz/msgs/any.proto"],
   deps = [
     ":header_proto",
     ":color_proto",
@@ -102,7 +102,7 @@ python_proto_library(
 # color.proto
 proto_library(
   name = "color_proto",
-  srcs = ["proto/ignition/msgs/color.proto"],
+  srcs = ["proto/gz/msgs/color.proto"],
   deps = [
     ":header_proto",
   ],
@@ -130,7 +130,7 @@ python_proto_library(
 # cmd_vel2d.proto
 proto_library(
   name = "cmd_vel2d_proto",
-  srcs = ["proto/ignition/msgs/cmd_vel2d.proto"],
+  srcs = ["proto/gz/msgs/cmd_vel2d.proto"],
   deps = [
     ":header_proto",
   ],
@@ -158,7 +158,7 @@ python_proto_library(
 # double.proto
 proto_library(
   name = "double_proto",
-  srcs = ["proto/ignition/msgs/double.proto"],
+  srcs = ["proto/gz/msgs/double.proto"],
   deps = [
     ":header_proto",
   ],
@@ -186,7 +186,7 @@ python_proto_library(
 # double_v.proto
 proto_library(
   name = "double_v_proto",
-  srcs = ["proto/ignition/msgs/double_v.proto"],
+  srcs = ["proto/gz/msgs/double_v.proto"],
   deps = [
     ":double_proto",
     ":header_proto",
@@ -219,7 +219,7 @@ python_proto_library(
 # float.proto
 proto_library(
   name = "float_proto",
-  srcs = ["proto/ignition/msgs/float.proto"],
+  srcs = ["proto/gz/msgs/float.proto"],
   deps = [
     ":header_proto",
   ],
@@ -247,7 +247,7 @@ python_proto_library(
 # float_v.proto
 proto_library(
   name = "float_v_proto",
-  srcs = ["proto/ignition/msgs/float_v.proto"],
+  srcs = ["proto/gz/msgs/float_v.proto"],
   deps = [
     ":float_proto",
     ":header_proto",
@@ -278,7 +278,7 @@ python_proto_library(
 # header.proto
 proto_library(
   name = "header_proto",
-  srcs = ["proto/ignition/msgs/header.proto"],
+  srcs = ["proto/gz/msgs/header.proto"],
   deps = [":time_proto"],
   strip_import_prefix = "proto",
 )
@@ -304,7 +304,7 @@ python_proto_library(
 # param.proto
 proto_library(
   name = "param_proto",
-  srcs = ["proto/ignition/msgs/param.proto"],
+  srcs = ["proto/gz/msgs/param.proto"],
   deps = [
     ":any_proto",
     ":header_proto",
@@ -335,7 +335,7 @@ python_proto_library(
 # pid.proto
 proto_library(
   name = "pid_proto",
-  srcs = ["proto/ignition/msgs/pid.proto"],
+  srcs = ["proto/gz/msgs/pid.proto"],
   deps = [
     ":double_proto",
     ":header_proto",
@@ -366,7 +366,7 @@ python_proto_library(
 # pose.proto
 proto_library(
   name = "pose_proto",
-  srcs = ["proto/ignition/msgs/pose.proto"],
+  srcs = ["proto/gz/msgs/pose.proto"],
   deps = [
     ":header_proto",
     ":quaternion_proto",
@@ -400,7 +400,7 @@ python_proto_library(
 # pose_v.proto
 proto_library(
   name = "pose_v_proto",
-  srcs = ["proto/ignition/msgs/pose_v.proto"],
+  srcs = ["proto/gz/msgs/pose_v.proto"],
   deps = [
     ":header_proto",
     ":pose_proto",
@@ -431,7 +431,7 @@ python_proto_library(
 # publish.proto
 proto_library(
   name = "publish_proto",
-  srcs = ["proto/ignition/msgs/publish.proto"],
+  srcs = ["proto/gz/msgs/publish.proto"],
   deps = [
     ":header_proto",
   ],
@@ -459,7 +459,7 @@ python_proto_library(
 # publishers.proto
 proto_library(
   name = "publishers_proto",
-  srcs = ["proto/ignition/msgs/publishers.proto"],
+  srcs = ["proto/gz/msgs/publishers.proto"],
   deps = [
     ":header_proto",
     ":publish_proto",
@@ -490,7 +490,7 @@ python_proto_library(
 # quaternion.proto
 proto_library(
   name = "quaternion_proto",
-  srcs = ["proto/ignition/msgs/quaternion.proto"],
+  srcs = ["proto/gz/msgs/quaternion.proto"],
   deps = [
     ":header_proto",
   ],
@@ -518,7 +518,7 @@ python_proto_library(
 # stringmsg.proto
 proto_library(
   name = "stringmsg_proto",
-  srcs = ["proto/ignition/msgs/stringmsg.proto"],
+  srcs = ["proto/gz/msgs/stringmsg.proto"],
   deps = [
     ":header_proto",
   ],
@@ -546,7 +546,7 @@ python_proto_library(
 # subscribe.proto
 proto_library(
   name = "subscribe_proto",
-  srcs = ["proto/ignition/msgs/subscribe.proto"],
+  srcs = ["proto/gz/msgs/subscribe.proto"],
   deps = [
     ":header_proto"
   ],
@@ -574,7 +574,7 @@ python_proto_library(
 # time.proto
 proto_library(
   name = "time_proto",
-  srcs = ["proto/ignition/msgs/time.proto"],
+  srcs = ["proto/gz/msgs/time.proto"],
   strip_import_prefix = "proto",
 )
 
@@ -593,7 +593,7 @@ python_proto_library(
 # topic_info.proto
 proto_library(
   name = "topic_info_proto",
-  srcs = ["proto/ignition/msgs/topic_info.proto"],
+  srcs = ["proto/gz/msgs/topic_info.proto"],
   deps = [
     ":header_proto",
     ":publish_proto",
@@ -627,7 +627,7 @@ python_proto_library(
 # twist.proto
 proto_library(
   name = "twist_proto",
-  srcs = ["proto/ignition/msgs/twist.proto"],
+  srcs = ["proto/gz/msgs/twist.proto"],
   deps = [
     ":header_proto",
     ":vector3d_proto",
@@ -658,7 +658,7 @@ python_proto_library(
 # vector3d.proto
 proto_library(
   name = "vector3d_proto",
-  srcs = ["proto/ignition/msgs/vector3d.proto"],
+  srcs = ["proto/gz/msgs/vector3d.proto"],
   deps = [
     ":header_proto",
   ],
@@ -686,7 +686,7 @@ python_proto_library(
 # wrench.proto
 proto_library(
   name = "wrench_proto",
-  srcs = ["proto/ignition/msgs/wrench.proto"],
+  srcs = ["proto/gz/msgs/wrench.proto"],
   deps = [
     ":header_proto",
     ":vector3d_proto",

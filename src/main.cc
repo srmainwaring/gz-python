@@ -18,9 +18,9 @@
 #include <iostream>
 #include <string>
 
-#include <ignition/msgs/time.pb.h>
+#include <gz/msgs/time.pb.h>
 
-#include "ignition/msgs/extras.hh"
+#include "gz/msgs/extras.hh"
 
 int main(int argc, const char* argv[])
 {
@@ -28,11 +28,11 @@ int main(int argc, const char* argv[])
   // compatible with the version used to generate the headers.
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
-  std::cout << "Ignition MsgsExtras Example" << std::endl;
+  std::cout << "Gazebo MsgsExtras Example" << std::endl;
 
-  // example: ignition/msgs/time.proto
+  // example: gz/msgs/time.proto
   {
-    ignition::msgs::Time msg;
+    gz::msgs::Time msg;
     msg.set_sec(11);
     msg.set_nsec(25);
     std::cout << msg.DebugString();
@@ -40,8 +40,8 @@ int main(int argc, const char* argv[])
 
   // example: msgs_tools
   {
-    auto msg = ignition::msgs::extras::MakeTime();
-    ignition::msgs::extras::TakeTime(msg);
+    auto msg = gz::msgs::extras::MakeTime();
+    gz::msgs::extras::TakeTime(msg);
   }
 
   // Shutdown
