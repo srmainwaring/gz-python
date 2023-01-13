@@ -1,4 +1,4 @@
-# Gazebo Python
+# Gazebo Python Bindings
 
 This project provides Python bindings for [`gz-msgs`](https://github.com/gazebosim/gz-msgs) and [`gz-transport`](https://github.com/gazebosim/gz-transport).
 
@@ -7,14 +7,14 @@ This project provides Python bindings for [`gz-msgs`](https://github.com/gazebos
 ### Install Gazebo
 
 Follow the installation instructions for [Gazebo Garden](https://gazebosim.org/docs/garden).
-This project depends directly on [`gz-msgs`](https://github.com/gazebosim/gz-msgs) and [`gz-transport`](https://github.com/gazebosim/gz-transport). These may be either available as system installs or in a source install in a local workspace folder which we assume is `~/workspace`.
+This project depends directly on [`gz-msgs`](https://github.com/gazebosim/gz-msgs) and [`gz-transport`](https://github.com/gazebosim/gz-transport). These may be either available as system installs or in a source install in a local workspace folder which we assume is `~/gz_ws`.
 
 ### Install `gz-python`
 
 Clone this repo into the workspace source directory and update external submodules:
 
 ```bash
-cd ~/workspace/src
+cd ~/gz_ws/src
 git clone --recurse-submodules https://github.com/srmainwaring/gz-python.git
 ```
 
@@ -36,8 +36,8 @@ export GAZEBO_VERSION=garden
 Then create a build directory, configure and make:
 
 ```bash
-mkdir -p ~/workspace/src/gz-python/build
-cd ~/workspace/src/gz-python/build
+mkdir -p ~/gz_ws/src/gz-python/build
+cd ~/gz_ws/src/gz-python/build
 cmake ..
 make
 ```
@@ -48,7 +48,7 @@ Update the PYTHONPATH to include the location of the extension modules and the
 generated Python protobuf bindings.
 
 ```bash
-cd ~/workspace/src/gz-python
+cd ~/gz_ws/src/gz-python
 export PYTHONPATH=${PYTHONPATH}:$(pwd)/build/python
 ```
 
@@ -126,7 +126,7 @@ node.subscribe(topic, cb, msg_type_name, sub_options)
 ## Examples
 
 A number of examples in C++ and Python are provided. In the following we suppose that
-they are being run from the project directory `~/workspace/src/gz-python`.
+they are being run from the project directory `~/gz_ws/src/gz-python`.
 
 ---
 
