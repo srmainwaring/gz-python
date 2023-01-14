@@ -1,3 +1,0 @@
-[submodule "external/pybind11_protobuf"]
-	path = external/pybind11_protobuf
-	url = https://github.com/srmainwaring/pybind11_protobuf.git

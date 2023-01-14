@@ -1,4 +1,5 @@
-cmake_minimum_required(VERSION 3.10.2 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.18)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 project(gz-python)
 
@@ -10,20 +11,20 @@ if(NOT APPLE)
 endif()
 
 #============================================================================
-# Find protobuf
-# 
-# macOS: $ brew install protobuf
-# 
-find_package(Protobuf REQUIRED)
+# Options
+option(BUILD_protobuf "Build protobuf Library" ON)
+message(STATUS "Build protobuf: ${BUILD_protobuf}")
+
+option(BUILD_pybind11_protobuf "Build pybind11_protobuf Library" ON)
+message(STATUS "Build pybind11_protobuf: ${BUILD_pybind11_protobuf}")
 
 #============================================================================
-# Find pybind11
+# Find Python
 # 
 # macOS: $ brew install python
 # macOS: $ brew install pybind11
 # 
 find_package(Python 3.10 EXACT COMPONENTS Interpreter Development)
-# find_package(pybind11 CONFIG)
 
 #============================================================================
 # Find Gazebo dependencies
@@ -44,9 +45,18 @@ find_package(gz-msgs${GZ_MSGS_VER} REQUIRED)
 find_package(gz-transport${GZ_TRANSPORT_VER} REQUIRED)
 
 #============================================================================
-# subdirectories for external dependencies
+# Build dependencies
+add_subdirectory(cmake/dependencies dependencies)
+list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_BINARY_DIR}/dependencies/install)
 
-add_subdirectory(external)
+include(deps)
+
+message("pybind11_protobuf_FOUND: ${pybind11_protobuf_FOUND}")
+message("pybind11_protobuf_SOURCE_DIR: ${pybind11_protobuf_SOURCE_DIR}")
+message("pybind11_protobuf_INCLUDE_DIRS: ${pybind11_protobuf_INCLUDE_DIRS}")
+
+# TODO fix upstream...
+set(pybind11_protobuf_INCLUDE_DIRS ${pybind11_protobuf_SOURCE_DIR})
 
 #============================================================================
 # gz_msgs_extras_lib C++ library
@@ -75,14 +85,14 @@ target_link_libraries(extras
   PRIVATE
     gz_msgs_extras_lib
     gz-msgs${GZ_MSGS_VER}::gz-msgs${GZ_MSGS_VER}
-    ${Protobuf_LIBRARY}
+    protobuf::libprotobuf
     pybind11_native_proto_caster
 )
 
 target_include_directories(extras
   PRIVATE
     ${PROJECT_SOURCE_DIR}/include
-    ${PROJECT_SOURCE_DIR}/external/pybind11_protobuf
+    ${pybind11_protobuf_INCLUDE_DIRS}
 )
 
 add_dependencies(extras
@@ -107,14 +117,14 @@ target_link_libraries(transport
   PRIVATE
     gz-msgs${GZ_MSGS_VER}::gz-msgs${GZ_MSGS_VER}
     gz-transport${GZ_TRANSPORT_VER}::gz-transport${GZ_TRANSPORT_VER}
-    ${Protobuf_LIBRARY}
+    protobuf::libprotobuf
     pybind11_native_proto_caster
 )
 
 target_include_directories(transport
   PRIVATE
-    ${Protobuf_INCLUDE_DIR}
-    ${PROJECT_SOURCE_DIR}/external/pybind11_protobuf
+    ${protobuf_INCLUDE_DIRS}
+    ${pybind11_protobuf_INCLUDE_DIRS}
 )
 
 set_target_properties(transport

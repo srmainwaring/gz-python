@@ -11,11 +11,11 @@ This project depends directly on [`gz-msgs`](https://github.com/gazebosim/gz-msg
 
 ### Install `gz-python`
 
-Clone this repo into the workspace source directory and update external submodules:
+Clone this repo into the workspace source directory:
 
 ```bash
 cd ~/gz_ws/src
-git clone --recurse-submodules https://github.com/srmainwaring/gz-python.git
+git clone https://github.com/srmainwaring/gz-python.git
 ```
 
 ### Build with CMake
