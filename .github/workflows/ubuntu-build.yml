@@ -1,0 +1,71 @@
+name: ubuntu-build
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+
+concurrency:
+  group: ci-${{github.workflow}}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    name: ubuntu-build
+    steps:
+      - name: Show env
+        run: env
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Build Dependencies
+        shell: bash
+        run: |
+          sudo apt update && sudo apt install --no-install-recommends -y \
+          cmake \
+          make \
+          wget \
+          lsb-release \
+          gnupg \
+          curl
+
+      - name: Show Python version and platform info
+        run: |
+          python --version
+          python -m platform
+
+      - name: Show CMake version
+        run: cmake --version
+
+      # - name: Show protobuf compiler version
+      #   run: protoc --version
+
+      - name: Install Build Tools
+        run: |
+          sudo sh -c 'echo "deb http://packages.ros.org/ros2/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros2-latest.list'
+          curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
+          sudo apt update && sudo apt install --no-install-recommends -y \
+          python3-pip \
+          python3-vcstool \
+          python3-colcon-common-extensions
+
+      - name: Install Gazebo Garden
+        run: |
+          sudo wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null
+          sudo apt update && sudo apt install --no-install-recommends -y \
+          gz-garden
+
+      - name: Build
+        run: |
+          colcon build --symlink-install --merge-install --cmake-args \
+          -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+          -DCMAKE_CXX_STANDARD=17 \
+          -DBUILD_TESTING=ON
+
+      - name: Test
+        run: |
+          colcon test --merge-install
+          colcon test-result --all --verbose

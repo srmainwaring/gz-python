@@ -2,6 +2,8 @@
 
 This project provides Python bindings for [`gz-msgs`](https://github.com/gazebosim/gz-msgs) and [`gz-transport`](https://github.com/gazebosim/gz-transport).
 
+[![ubuntu-build](https://github.com/srmainwaring/gz-python/actions/workflows/ubuntu-build.yml/badge.svg)](https://github.com/srmainwaring/gz-python/actions/workflows/ubuntu-build.yml)
+
 ## Building with CMake
 
 ### Install Gazebo
@@ -518,6 +520,9 @@ and to enable this set the following environment variable before building the pr
 ```bash
 export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
 ```
+
+### CI Testing
+
 
 
 ### Repos used to build Gazebo on macOS with Bazel
