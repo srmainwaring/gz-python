@@ -6,17 +6,12 @@ project(gz-python)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-if(NOT APPLE)
-  set(CMAKE_CXX_FLAGS "-fPIC")
-endif()
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 #============================================================================
 # Options
-option(BUILD_protobuf "Build protobuf Library" ON)
-message(STATUS "Build protobuf: ${BUILD_protobuf}")
 
-option(BUILD_pybind11_protobuf "Build pybind11_protobuf Library" ON)
-message(STATUS "Build pybind11_protobuf: ${BUILD_pybind11_protobuf}")
+option(BUILD_TESTS "Build tests." OFF)
 
 #============================================================================
 # Find Python
@@ -46,10 +41,17 @@ find_package(gz-transport${GZ_TRANSPORT_VER} REQUIRED)
 
 #============================================================================
 # Build dependencies
+
+set(_protobuf_repository "https://github.com/protocolbuffers/protobuf.git")
+set(_protobuf_version 21.5)
+set(_protobuf_tag v21.5)
+
+set(_pybind11_protobuf_repository "https://github.com/pybind/pybind11_protobuf.git")
+set(_pybind11_protobuf_version 0.0.0)
+set(_pybind11_protobuf_tag main)
+
 add_subdirectory(cmake/dependencies dependencies)
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_BINARY_DIR}/dependencies/install)
-
-include(deps)
 
 message("pybind11_protobuf_FOUND: ${pybind11_protobuf_FOUND}")
 message("pybind11_protobuf_SOURCE_DIR: ${pybind11_protobuf_SOURCE_DIR}")
