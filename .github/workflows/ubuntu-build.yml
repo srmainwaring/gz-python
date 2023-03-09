@@ -39,8 +39,8 @@ jobs:
       - name: Show CMake version
         run: cmake --version
 
-      - name: Show protobuf compiler version
-        run: protoc --version
+      # - name: Show protobuf compiler version
+      #   run: protoc --version
 
       - name: Install Build Tools
         run: |
