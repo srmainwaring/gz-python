@@ -264,7 +264,7 @@ void define_transport_node(py::module_ module)
           const unsigned int &_timeout,
           const std::string &_repType)
           {
-            // see ign-transport/src/cmd/ign.cc L227-240
+            // see gz-transport/src/cmd/gz.cc L227-240
             auto rep = gz::msgs::Factory::New(_repType);
             if (!rep)
             {
@@ -272,7 +272,7 @@ void define_transport_node(py::module_ module)
                         << _repType << "].\n";
               return std::make_tuple(false, false);
             }
-
+      
             bool result{false};
             bool executed = _node.Request(
                _service, _request, _timeout, *rep, result);
@@ -282,8 +282,28 @@ void define_transport_node(py::module_ module)
           pybind11::arg("request"),
           pybind11::arg("timeout"),
           pybind11::arg("rep_type_name"),
-          "Request a new service without input parameter using"
-          " a blocking call")
+          "Request a new service using a blocking call")
+      // send a service request using the non-blocking interface
+      // this requires changes to gz-transport Node and ReqHandler.
+      .def("request", [](
+          Node &_node,
+          const std::string &_service,
+          const google::protobuf::Message &_request,
+          std::function<void(
+              const google::protobuf::Message &_reply,
+              const bool _result)> &_callback,
+          const std::string &_repType)
+          {
+            bool result{false};
+            bool executed = _node.Request(
+                _service, _request, _callback, _repType.c_str());
+            return executed;
+          },
+          pybind11::arg("service"),
+          pybind11::arg("request"),
+          pybind11::arg("callback"),
+          pybind11::arg("rep_type_name"),
+          "Request a new service using a non-blocking call")
       .def("service_list", [](
           Node &_node)
           {
