@@ -16,6 +16,7 @@
 
 from scipy.spatial.transform import Rotation as Rotation
 import math
+import random
 import time
 
 from gz.msgs.header_pb2 import Header
@@ -44,6 +45,18 @@ def main():
     else:
         print("Error advertising topic [{}]".format(pose_topic))
 
+    pose2_topic = "/pose2"
+    pose2_msg_type_name = Pose.DESCRIPTOR.full_name
+
+    pose2_pub = node.advertise(
+        pose2_topic, pose2_msg_type_name, pub_options)
+    if pose2_pub.valid():
+        print("Advertising {} on topic [{}]".format(
+            pose2_msg_type_name, pose2_topic))
+    else:
+        print("Error advertising topic [{}]".format(pose2_topic))
+
+
     twist_topic = "/twist"
     twist_msg_type_name = Twist.DESCRIPTOR.full_name
     twist_pub = node.advertise(
@@ -55,8 +68,9 @@ def main():
         print("Error advertising topic [{}]".format(twist_topic))
 
     # rover moving in a circle of radius with constant velocity
-    radius = 5.0
-    ang_vel = 0.1
+    radius = 2.0
+    ang_vel = 0.2
+
 
     # publish messages at 2Hz
     start = time.time_ns()
@@ -66,21 +80,24 @@ def main():
             # update time
             now = time.time_ns()
             time_ns = now - start
-            time_s = int(time_ns/1.0E9)
+            sim_time = time_ns / 1.0E9
+
+            time_s = int(time_ns / 1.0E9)
             time_ns = int(time_ns % 1000000000)
             id = count
             count += 1
 
             # update position, orientation and velocity
             wz = ang_vel
-            theta = wz * time_s
+            theta = wz * sim_time
             c = math.cos(theta)
             s = math.sin(theta)
             x = radius * c
             y = radius * s
             vx = -1.0 * radius * wz * s
             vy = radius * wz * c
-            rot = Rotation.from_euler("xyz", [0.0, 0.0, theta])
+            rot = Rotation.from_euler("xyz",
+                [0.0, 0.0, theta + math.pi/2])
             quat = rot.as_quat()
 
             # # Prepare the messages.
@@ -109,6 +126,26 @@ def main():
             pose.position.CopyFrom(position)
             pose.orientation.CopyFrom(orientation)
 
+            # add noise
+            position.x = x + random.gauss(0.0, 0.1)
+            position.y = y + random.gauss(0.0, 0.1)
+            position.z = 0.0
+
+            rot = Rotation.from_euler("xyz",
+                [0.0, 0.0, theta + math.pi/2 + random.gauss(0.0, 0.1)])
+            quat = rot.as_quat()
+            orientation.x = quat[0]
+            orientation.y = quat[1]
+            orientation.z = quat[2]
+            orientation.w = quat[3]
+
+            pose2 = Pose()
+            pose2.name = "base_link"
+            pose2.id = id
+            pose2.header.CopyFrom(header)
+            pose2.position.CopyFrom(position)
+            pose2.orientation.CopyFrom(orientation)
+
             lin_vel_msg = Vector3d() 
             lin_vel_msg.x = vx
             lin_vel_msg.y = vy
@@ -127,13 +164,19 @@ def main():
             if not pose_pub.publish(pose):
                 break
 
+            if not pose2_pub.publish(pose2):
+                break
+
             if not twist_pub.publish(twist):
                 break
 
-            print("Publishing pose on topic [{}], twist on topic [{}]".format(
-                pose_topic, twist_topic))
+            print("[{:.2f}] ({:.1f} {:.1f} {:.1f})".format(
+                sim_time, position.x, position.y, position.z))
 
-            time.sleep(0.5)
+            # print("Publishing pose on topic [{}], twist on topic [{}]".format(
+                # pose_topic, twist_topic))
+
+            time.sleep(1/5)
 
     except KeyboardInterrupt:
         pass
