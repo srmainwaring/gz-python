@@ -27,6 +27,7 @@
 #include <google/protobuf/message.h>
 
 #include <functional>
+#include <tuple>
 
 namespace py = pybind11;
 
@@ -267,13 +268,15 @@ void define_transport_node(py::module_ module)
             auto rep = gz::msgs::Factory::New(_repType);
             if (!rep)
             {
-              std::cerr << "Unable to create response of type[" << _repType << "].\n";
-              return false;
+              std::cerr << "Unable to create response of type["
+                        << _repType << "].\n";
+              return std::make_tuple(false, false);
             }
 
             bool result{false};
-            bool executed = _node.Request(_service, _request, _timeout, *rep, result);
-            return (executed && result);
+            bool executed = _node.Request(
+               _service, _request, _timeout, *rep, result);
+            return std::make_tuple(executed, result);
           },
           pybind11::arg("service"),
           pybind11::arg("request"),
