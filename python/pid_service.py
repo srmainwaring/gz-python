@@ -20,7 +20,7 @@ from gz.msgs.pid_pb2 import PID
 
 from gz.transport import Node
 
-# service response callback 
+# service response callback
 def rep_cb(msg, result):
     print("Result: {}".format(result))
     print("Response: {}".format(msg))
@@ -47,7 +47,7 @@ def main():
 
     # call service (blocking)
     print("Blocking service call")
-    executed = node.request(service, req, timeout, rep_type_name)
+    executed, result = node.request(service, req, timeout, rep_type_name)
 
     # update PID so we can verify second call
     req.p_gain_optional.data = 0.3
